@@ -61,7 +61,7 @@ function isActive(href: string) {
       })();
     </script>
   </head>
-  <body class="min-h-screen">
+  <body class="min-h-screen flex flex-col">
     <!-- Background layers -->
     <ParticleBackground client:load />
     <MouseGlow client:load />
@@ -109,7 +109,7 @@ function isActive(href: string) {
     </header>
 
     <!-- Main Content -->
-    <main class="relative z-10">
+    <main class="relative z-10 flex-1">
       <slot />
     </main>
 
