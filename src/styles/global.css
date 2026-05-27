@@ -93,15 +93,15 @@
   --bg-secondary: #111827;
   --bg-tertiary: #1a2332;
   --bg-card: rgba(17, 24, 39, 0.75);
-  --bg-card-hover: rgba(26, 35, 50, 0.85);
-  --border-card: rgba(59, 158, 255, 0.08);
-  --border-card-hover: rgba(59, 158, 255, 0.2);
+  --bg-card-hover: rgba(26, 35, 50, 0.9);
+  --border-card: rgba(255, 255, 255, 0.06);
+  --border-card-hover: rgba(59, 158, 255, 0.5);
   --glass-blur: 16px;
   --text-primary: #f0f6fc;
   --text-secondary: #94a3b8;
   --text-muted: #475569;
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 158, 255, 0.06);
-  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59, 158, 255, 0.15), 0 0 60px rgba(59, 158, 255, 0.06);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.04);
+  --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 0 1.5px rgba(59, 158, 255, 0.5), 0 0 40px rgba(59, 158, 255, 0.12);
   --nav-bg: rgba(11, 15, 25, 0.85);
   --surface-glow: radial-gradient(ellipse at top, rgba(59, 158, 255, 0.04) 0%, transparent 60%);
 
@@ -147,18 +147,18 @@
   /* Site design system */
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f5f9;
-  --bg-card: rgba(255, 255, 255, 0.8);
-  --bg-card-hover: rgba(255, 255, 255, 0.95);
-  --border-card: rgba(0, 0, 0, 0.06);
-  --border-card-hover: rgba(59, 158, 255, 0.25);
+  --bg-tertiary: #eef2f8;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-card-hover: #ffffff;
+  --border-card: rgba(0, 0, 0, 0.08);
+  --border-card-hover: #3b9eff;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(59, 158, 255, 0.2);
-  --nav-bg: rgba(248, 250, 252, 0.9);
-  --surface-glow: radial-gradient(ellipse at top, rgba(59, 158, 255, 0.03) 0%, transparent 60%);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 4px 24px rgba(59, 158, 255, 0.2), 0 0 0 2px #3b9eff, 0 20px 40px rgba(0, 0, 0, 0.08);
+  --nav-bg: rgba(248, 250, 252, 0.95);
+  --surface-glow: radial-gradient(ellipse at top, rgba(59, 158, 255, 0.04) 0%, transparent 60%);
 
   /* shadcn/ui tokens — light mode */
   --background: oklch(1 0 0);
@@ -198,15 +198,16 @@
   background: var(--bg-card);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--border-card);
+  border: 1.5px solid var(--border-card);
   border-radius: 16px;
   box-shadow: var(--shadow-card);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
   &:hover {
     background: var(--bg-card-hover);
     border-color: var(--border-card-hover);
     box-shadow: var(--shadow-card-hover);
-    transform: translateY(-4px);
+    transform: translateY(-5px) scale(1.005);
   }
 }
 
@@ -400,15 +401,27 @@ img {
   font-size: 0.75rem;
   font-weight: 500;
   border-radius: 9999px;
-  background: var(--color-accent-muted);
-  color: var(--color-accent);
-  border: 1px solid rgba(59, 158, 255, 0.1);
+  background: rgba(59, 158, 255, 0.1);
+  color: #3b9eff;
+  border: 1px solid rgba(59, 158, 255, 0.2);
   letter-spacing: 0;
   transition: all 0.2s;
 }
 .tag:hover {
   background: rgba(59, 158, 255, 0.2);
-  border-color: rgba(59, 158, 255, 0.3);
+  border-color: rgba(59, 158, 255, 0.4);
+}
+
+/* Light mode tags - slightly more saturated */
+[data-theme="light"] .tag {
+  background: rgba(59, 158, 255, 0.08);
+  color: #1a7fd4;
+  border-color: rgba(59, 158, 255, 0.2);
+}
+[data-theme="light"] .tag:hover {
+  background: rgba(59, 158, 255, 0.15);
+  border-color: rgba(59, 158, 255, 0.35);
+  color: #1a7fd4;
 }
 
 /* ============================================
@@ -456,17 +469,19 @@ pre:hover .code-copy-btn { opacity: 1; }
    ============================================ */
 .nav-link-active {
   position: relative;
-  color: var(--color-accent);
+  color: #3b9eff !important;
+  font-weight: 600;
   &::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: -4px;
     left: 50%;
     transform: translateX(-50%);
-    width: 20px;
-    height: 2px;
-    border-radius: 1px;
-    background: var(--color-accent);
+    width: 24px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: #3b9eff;
+    box-shadow: 0 0 8px rgba(59, 158, 255, 0.6);
   }
 }
 
@@ -507,7 +522,13 @@ pre:hover .code-copy-btn { opacity: 1; }
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
+  /* Override: keep our blue accent, not shadcn's grey --accent */
+  --color-accent: #3b9eff;
+  --color-accent-hover: #5eb3ff;
+  --color-accent-muted: rgba(59, 158, 255, 0.12);
+  --color-accent-glow: rgba(59, 158, 255, 0.25);
+  /* shadcn's accent available as --color-shadcn-accent if needed */
+  --color-shadcn-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
