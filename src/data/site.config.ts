@@ -2,12 +2,13 @@ export interface SiteConfig {
   title: string;
   description: string;
   author: string;
+  nickname: string;
   avatar: string;
   heroTexts: string[];
   social: {
     github: string;
     email: string;
-    twitter: string;
+    bilibili: string;
   };
   navLinks: {
     text: string;
@@ -28,20 +29,21 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  title: '星轨小站',
-  description: '一个关于前端开发、技术探索与生活随笔的个人博客',
-  author: 'StarTrail',
+  title: 'Dreamer',
+  description: '一个热爱代码与梦想的开发者的个人空间',
+  author: 'Dreamer',
+  nickname: 'Dreamer',
   avatar: '/avatar.png',
   heroTexts: [
-    '你好，欢迎来到我的小站 👋',
-    '我是一名前端开发者',
-    '热爱开源，热爱技术',
-    '在这里记录我的成长与思考',
+    '一个热爱编程的 Dreamer 🚀',
+    '开源爱好者 & 技术写作者 ✍️',
+    '终身学习者，不断探索 🌟',
+    '用代码构建梦想中的世界 💫',
   ],
   social: {
-    github: 'https://github.com/startrail',
-    email: 'mailto:hello@startrail.dev',
-    twitter: 'https://twitter.com/startrail',
+    github: 'https://github.com/dreamer-oos',
+    email: 'mailto:hello@dreamer.dev',
+    bilibili: 'https://space.bilibili.com/',
   },
   navLinks: [
     { text: '首页', href: '/' },

@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import friendsData from '../data/friends.json';
-import { Button } from '../components/ui/button';
 ---
 
-<BaseLayout title="友链 - My Site" description="我的朋友们和推荐的网站">
+<BaseLayout title="友链 - Dreamer" description="我的朋友们和推荐的网站">
   <section class="pt-28 pb-16 px-5">
     <div class="mx-auto max-w-5xl">
       <!-- Header -->
@@ -50,12 +49,17 @@ import { Button } from '../components/ui/button';
           欢迎交换友链！请确保你的网站有独立域名，且内容积极向上。
         </p>
         <div class="flex items-center justify-center gap-3">
-          <Button asChild className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_rgba(59,158,255,0.2)] hover:shadow-[0_0_30px_rgba(59,158,255,0.3)] transition-all" size="default" client:load>
-            <a href="mailto:hello@example.com" id="apply-email-btn">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-              发送邮件
-            </a>
-          </Button>
+          <a 
+            href="mailto:hello@dreamer.dev" 
+            id="apply-email-btn"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white transition-all duration-300"
+            style="background: linear-gradient(135deg, #3b9eff, #7c3aed); box-shadow: 0 0 20px rgba(59,158,255,0.25);"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+            </svg>
+            发送邮件
+          </a>
         </div>
       </div>
     </div>
