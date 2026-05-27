@@ -1,22 +1,21 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import friendsData from '../data/friends.json';
+import { siteConfig } from '../data/site.config';
 ---
 
-<BaseLayout title="友链 - Dreamer" description="我的朋友们和推荐的网站">
+<BaseLayout title={`Friends - ${siteConfig.name}`} description="My friends and recommended websites">
   <section class="pt-28 pb-16 px-5">
     <div class="mx-auto max-w-5xl">
-      <!-- Header -->
       <div class="mb-10 scroll-animate">
         <p class="text-xs font-medium text-accent mb-1.5 tracking-wider uppercase">Friends</p>
-        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3" id="friends-title">友链</h1>
-        <p class="text-[var(--text-secondary)]">海内存知己，天涯若比邻</p>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3" id="friends-title">Friends</h1>
+        <p class="text-[var(--text-secondary)]">A list of my friends and sites I recommend</p>
       </div>
 
-      <!-- Grid -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {friendsData.map((friend, index) => (
-          <a 
+          <a
             href={friend.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -27,8 +26,8 @@ import friendsData from '../data/friends.json';
             id={`friend-${index}`}
           >
             <div class="relative mx-auto w-14 h-14 sm:w-16 sm:h-16 mb-3">
-              <img 
-                src={friend.avatar} 
+              <img
+                src={friend.avatar}
                 alt={friend.name}
                 class="w-full h-full rounded-full object-cover border-2 border-[var(--border-card)] group-hover:border-accent/40 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(59,158,255,0.2)]"
                 loading="lazy"
@@ -41,26 +40,28 @@ import friendsData from '../data/friends.json';
         ))}
       </div>
 
-      <!-- Apply -->
+      <!-- Apply section -->
       <div class="mt-16 glass-card p-8 sm:p-10 text-center scroll-animate" id="apply-friend-link">
-        <div class="text-3xl mb-4">🤝</div>
-        <h2 class="text-xl font-bold mb-3">申请友链</h2>
-        <p class="text-sm text-[var(--text-secondary)] mb-6 max-w-md mx-auto leading-relaxed">
-          欢迎交换友链！请确保你的网站有独立域名，且内容积极向上。
-        </p>
-        <div class="flex items-center justify-center gap-3">
-          <a 
-            href="mailto:hello@dreamer.dev" 
-            id="apply-email-btn"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white transition-all duration-300"
-            style="background: linear-gradient(135deg, #3b9eff, #7c3aed); box-shadow: 0 0 20px rgba(59,158,255,0.25);"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
-            </svg>
-            发送邮件
-          </a>
+        <div class="w-12 h-12 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-4">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+          </svg>
         </div>
+        <h2 class="text-xl font-bold mb-3">Apply for Friend Link</h2>
+        <p class="text-sm text-[var(--text-secondary)] mb-6 max-w-md mx-auto leading-relaxed">
+          Welcome to exchange friend links! Please make sure your site has an independent domain and positive content.
+        </p>
+        <a
+          href={`mailto:${siteConfig.friendsEmail}`}
+          id="apply-email-btn"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white transition-all duration-300 hover:scale-105"
+          style="background: linear-gradient(135deg, #3b9eff, #7c3aed); box-shadow: 0 0 20px rgba(59,158,255,0.25);"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+          </svg>
+          Send Email
+        </a>
       </div>
     </div>
   </section>

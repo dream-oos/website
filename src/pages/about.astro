@@ -1,41 +1,81 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { skills } from '../data/skills';
-import { Button } from '../components/ui/button';
+import { siteConfig } from '../data/site.config';
 ---
 
-<BaseLayout title="关于 - Dreamer" description="关于我和这个网站">
+<BaseLayout title={`About - ${siteConfig.name}`} description={siteConfig.description}>
   <section class="pt-28 pb-16 px-5">
     <div class="mx-auto max-w-3xl">
-      <!-- Profile -->
+
+      <!-- Profile Card -->
       <div class="glass-card p-8 sm:p-10 mb-10 scroll-animate" id="about-profile">
         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-7">
+          <!-- Avatar -->
           <div class="shrink-0">
             <div class="avatar-ring w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden">
-              <div class="w-full h-full bg-[var(--bg-secondary)] flex items-center justify-center text-4xl sm:text-5xl rounded-full border-2 border-[var(--bg-tertiary)]">
-                👨‍�?              </div>
+              <img
+                src={siteConfig.avatar}
+                alt={siteConfig.name}
+                class="w-full h-full rounded-full object-cover"
+                onerror="this.onerror=null;this.src='/avatar.jpg'"
+              />
             </div>
           </div>
-          <div class="text-center sm:text-left">
-          <h1 class="text-2xl font-bold mb-1" id="about-name">Dreamer</h1>
-          <p class="text-sm text-[var(--text-secondary)] mb-3">Full-Stack Developer · Open Source Dreamer</p>
-            <div class="text-sm text-[var(--text-secondary)] space-y-2.5 leading-relaxed">
-              <p>你好！�?我是一名热爱编程的开发者，专注�?Web 前端和全栈开发。喜欢探索新技术，乐于分享所学�?/p>
-              <p>工作之余，我喜欢阅读、摄影和折腾各种有趣的开源项目。这个博客是我记录学习和思考的地方�?/p>
+
+          <!-- Info -->
+          <div class="flex-1 text-center sm:text-left">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-1 tracking-tight" id="about-name">
+              <span class="text-gradient">{siteConfig.name}</span>
+            </h1>
+            <p class="text-sm text-accent mb-4 font-medium">{siteConfig.tagline}</p>
+
+            <div class="text-sm text-[var(--text-secondary)] space-y-2 leading-relaxed">
+              {siteConfig.bio.map(line => <p>{line}</p>)}
             </div>
+
+            <!-- Social buttons -->
             <div class="flex items-center justify-center sm:justify-start gap-2.5 mt-5">
-              <Button asChild variant="outline" size="sm" className="gap-1.5 border-[var(--border-card)] bg-transparent text-[var(--text-secondary)] hover:text-accent hover:border-accent/20 hover:bg-[var(--bg-tertiary)]">
-                <a href="https://github.com/dreamer-oos" target="_blank" rel="noopener noreferrer" id="about-github">
-                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              {siteConfig.social.github && (
+                <a
+                  href={siteConfig.social.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  id="about-github"
+                  class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[var(--border-card)] bg-transparent text-xs font-medium text-[var(--text-secondary)] hover:text-accent hover:border-accent/30 hover:bg-[var(--bg-tertiary)] transition-all"
+                >
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
                   GitHub
                 </a>
-              </Button>
-              <Button asChild variant="outline" size="sm" className="gap-1.5 border-[var(--border-card)] bg-transparent text-[var(--text-secondary)] hover:text-accent hover:border-accent/20 hover:bg-[var(--bg-tertiary)]">
-                <a href="mailto:hello@dreamer.dev" id="about-email">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-                  邮箱
+              )}
+              {siteConfig.social.email && (
+                <a
+                  href={siteConfig.social.email}
+                  id="about-email"
+                  class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[var(--border-card)] bg-transparent text-xs font-medium text-[var(--text-secondary)] hover:text-accent hover:border-accent/30 hover:bg-[var(--bg-tertiary)] transition-all"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+                  </svg>
+                  Email
                 </a>
-              </Button>
+              )}
+              {siteConfig.social.bilibili && (
+                <a
+                  href={siteConfig.social.bilibili}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  id="about-bilibili"
+                  class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[var(--border-card)] bg-transparent text-xs font-medium text-[var(--text-muted)] hover:text-[#fb7299] hover:border-[#fb7299]/30 hover:bg-[var(--bg-tertiary)] transition-all"
+                >
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1 0-1.733 1.234 1.234 0 0 1 1.734 0L8.58 4.653h6.84l1.813-1.7a1.234 1.234 0 0 1 1.734 0 1.234 1.234 0 0 1 0 1.732l-1.154 1.468zM4 8.933v6.68c0 .44.147.806.44 1.1.293.293.66.44 1.1.44h13.333c.44 0 .806-.147 1.1-.44.293-.294.44-.66.44-1.1V8.933c0-.44-.147-.806-.44-1.1-.294-.293-.66-.44-1.1-.44H5.54c-.44 0-.806.147-1.1.44-.293.294-.44.66-.44 1.1zm4.373 5.293a.88.88 0 0 1-.88-.88V11.28c0-.484.396-.88.88-.88h.547a.88.88 0 0 1 .88.88v2.067c0 .484-.396.88-.88.88h-.547zm6.933 0a.88.88 0 0 1-.88-.88V11.28a.88.88 0 0 1 .88-.88h.547a.88.88 0 0 1 .88.88v2.067a.88.88 0 0 1-.88.88h-.547z"/>
+                  </svg>
+                  Bilibili
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -47,7 +87,7 @@ import { Button } from '../components/ui/button';
           <p class="text-xs font-medium text-accent tracking-wider uppercase">Skills</p>
           <div class="flex-1 h-px bg-[var(--border-card)]"></div>
         </div>
-        
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {skills.map((skill, index) => (
             <div class="glass-card p-4 scroll-animate" id={`skill-${index}`}>
@@ -56,58 +96,16 @@ import { Button } from '../components/ui/button';
                 <span class="text-xs text-accent font-semibold tabular-nums">{skill.level}%</span>
               </div>
               <div class="w-full h-1.5 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
-                <div 
-                  class="skill-bar h-full rounded-full bg-gradient-to-r from-accent to-[#a855f7] transition-all duration-1000 ease-out"
+                <div
+                  class="skill-bar h-full rounded-full bg-gradient-to-r from-accent to-[#a855f7]"
                   style={`width: ${skill.level}%`}
-                  data-width={skill.level}
-                />
+                ></div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <!-- Site Info -->
-      <div class="mt-10 glass-card p-6 scroll-animate scroll-animate-delay-2" id="about-site">
-        <div class="flex items-center gap-4 mb-4">
-          <p class="text-xs font-medium text-accent tracking-wider uppercase">About This Site</p>
-          <div class="flex-1 h-px bg-[var(--border-card)]"></div>
-        </div>
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <div class="flex items-center gap-2 text-[var(--text-secondary)]">
-            <span class="text-base">🚀</span>
-            <span><strong class="text-[var(--text-primary)]">框架</strong> Astro 6</span>
-          </div>
-          <div class="flex items-center gap-2 text-[var(--text-secondary)]">
-            <span class="text-base">⚛️</span>
-            <span><strong class="text-[var(--text-primary)]">交互</strong> React 19</span>
-          </div>
-          <div class="flex items-center gap-2 text-[var(--text-secondary)]">
-            <span class="text-base">🎨</span>
-            <span><strong class="text-[var(--text-primary)]">样式</strong> Tailwind v4</span>
-          </div>
-          <div class="flex items-center gap-2 text-[var(--text-secondary)]">
-            <span class="text-base">📝</span>
-            <span><strong class="text-[var(--text-primary)]">内容</strong> Markdown</span>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 </BaseLayout>
-
-<script is:inline>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const bar = entry.target.querySelector('[data-width]');
-        if (bar instanceof HTMLElement) bar.style.width = bar.dataset.width + '%';
-      }
-    });
-  }, { threshold: 0.3 });
-  document.querySelectorAll('[id^="skill-"]').forEach(el => {
-    const bar = el.querySelector('[data-width]');
-    if (bar instanceof HTMLElement) bar.style.width = '0%';
-    observer.observe(el);
-  });
-</script>
