@@ -1,0 +1,30 @@
+[
+  {
+    "name": "林夕",
+    "avatar": "https://api.dicebear.com/9.x/avataaars/svg?seed=LinXi",
+    "description": "全栈开发者，热衷于探索新技术与开源项目。",
+    "url": "https://linxi.dev",
+    "category": "技术博主"
+  },
+  {
+    "name": "云深",
+    "avatar": "https://api.dicebear.com/9.x/avataaars/svg?seed=YunShen",
+    "description": "设计师 & 前端开发，专注于用户体验和交互设计。",
+    "url": "https://yunshen.design",
+    "category": "设计师"
+  },
+  {
+    "name": "墨染",
+    "avatar": "https://api.dicebear.com/9.x/avataaars/svg?seed=MoRan",
+    "description": "后端架构师，分享分布式系统和云原生技术实践。",
+    "url": "https://moran.tech",
+    "category": "技术博主"
+  },
+  {
+    "name": "晴川",
+    "avatar": "https://api.dicebear.com/9.x/avataaars/svg?seed=QingChuan",
+    "description": "独立开发者，记录产品开发与创业路上的点点滴滴。",
+    "url": "https://qingchuan.me",
+    "category": "独立开发者"
+  }
+]

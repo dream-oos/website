@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+const allTags = [...new Set(sortedPosts.flatMap(post => post.data.tags))];
+
+const postsByYear: Record<string, typeof sortedPosts> = {};
+for (const post of sortedPosts) {
+  const year = post.data.pubDate.getFullYear().toString();
+  if (!postsByYear[year]) postsByYear[year] = [];
+  postsByYear[year].push(post);
+}
+const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="博客 - My Site" description="我的博客文章列表">
+  <section class="pt-28 pb-16 px-5">
+    <div class="mx-auto max-w-4xl">
+      <!-- Header -->
+      <div class="mb-10 scroll-animate">
+        <p class="text-xs font-medium text-accent mb-1.5 tracking-wider uppercase">Blog</p>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3" id="blog-title">博客</h1>
+        <p class="text-[var(--text-secondary)]">
+          分享技术心得与生活感悟，共 <span class="text-accent font-medium">{sortedPosts.length}</span> 篇文章
+        </p>
+      </div>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 mb-10 scroll-animate scroll-animate-delay-1" id="blog-tags">
+        {allTags.map(tag => (
+          <span class="tag cursor-pointer">{tag}</span>
+        ))}
+      </div>
+
+      <!-- Posts by Year -->
+      <div class="space-y-14">
+        {years.map(year => (
+          <div class="scroll-animate">
+            <div class="flex items-center gap-4 mb-6">
+              <h2 class="text-lg font-bold text-accent tabular-nums">{year}</h2>
+              <div class="flex-1 h-px bg-[var(--border-card)]"></div>
+              <span class="text-xs text-[var(--text-muted)]">{postsByYear[year].length} 篇</span>
+            </div>
+            
+            <div class="space-y-3">
+              {postsByYear[year].map((post) => (
+                <a href={`/blog/${post.id}`}
+                   class="group flex items-start gap-4 glass-card-hover p-4 sm:p-5"
+                   id={`blog-post-${post.id}`}>
+                  <!-- Date -->
+                  <time 
+                    datetime={post.data.pubDate.toISOString()}
+                    class="text-xs text-[var(--text-muted)] tabular-nums whitespace-nowrap mt-0.5 hidden sm:block w-16"
+                  >
+                    {post.data.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
+                  </time>
+
+                  <!-- Content -->
+                  <div class="flex-1 min-w-0">
+                    <h3 class="text-[15px] font-semibold group-hover:text-accent transition-colors leading-snug mb-1.5">
+                      {post.data.title}
+                    </h3>
+                    <p class="text-sm text-[var(--text-secondary)] line-clamp-1 mb-2">
+                      {post.data.description}
+                    </p>
+                    <div class="flex flex-wrap gap-1.5">
+                      {post.data.tags.map(tag => (
+                        <span class="tag !text-[11px] !py-0 !px-2">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {sortedPosts.length === 0 && (
+        <div class="text-center py-24">
+          <p class="text-[var(--text-muted)] text-lg">暂无文章</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
