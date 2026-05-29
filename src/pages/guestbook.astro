@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CommentSection from '../components/CommentSection.tsx';
+import { siteConfig } from '../data/site.config';
+
+const walineURL = siteConfig.comment.walineServerURL;
+---
+
+<BaseLayout title={`留言板 - ${siteConfig.name}`} description="欢迎在这里留下你的足迹，分享你的想法">
+  <section class="pt-28 pb-16 px-5">
+    <div class="mx-auto max-w-3xl">
+
+      <!-- Header -->
+      <div class="mb-12 scroll-animate">
+        <p class="text-xs font-medium text-accent mb-1.5 tracking-wider uppercase">Guestbook</p>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4" id="guestbook-title">留言板</h1>
+        <p class="text-[var(--text-secondary)] leading-relaxed">
+          欢迎来到这里！👋 留下你的想法、问候或者任何你想说的话。<br />
+          所有留言都会保留，让这里成为我们共同的记忆空间。
+        </p>
+      </div>
+
+      <!-- Stats cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-12 scroll-animate scroll-animate-delay-1">
+        <div class="glass-card p-5 text-center">
+          <div class="text-2xl font-bold text-gradient mb-1" id="guestbook-pageview">...</div>
+          <div class="text-xs text-[var(--text-muted)]">访客数</div>
+        </div>
+        <div class="glass-card p-5 text-center">
+          <div class="text-2xl font-bold text-gradient mb-1" id="guestbook-comment-count">...</div>
+          <div class="text-xs text-[var(--text-muted)]">留言数</div>
+        </div>
+        <div class="glass-card p-5 text-center hidden sm:block">
+          <div class="text-2xl font-bold text-gradient mb-1">∞</div>
+          <div class="text-xs text-[var(--text-muted)]">保留时间</div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="glass-card p-5 mb-8 scroll-animate scroll-animate-delay-2 flex gap-3 items-start" id="guestbook-tips">
+        <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 mt-0.5">
+          <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-[var(--text-primary)] mb-1">留言小贴士</p>
+          <p class="text-sm text-[var(--text-secondary)]">
+            支持 Markdown 语法 · 无需注册，填写昵称即可留言 · 请保持友善 🌿
+          </p>
+        </div>
+      </div>
+
+      <!-- Comment section -->
+      <div class="scroll-animate scroll-animate-delay-3" id="guestbook-comments">
+        {walineURL ? (
+          <CommentSection
+            client:visible
+            serverURL={walineURL}
+            path="/guestbook"
+          />
+        ) : (
+          <div class="glass-card p-12 text-center">
+            <svg class="w-12 h-12 mx-auto mb-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <p class="text-[var(--text-muted)]">评论系统未配置，请在 site.yaml 中设置 walineServerURL</p>
+          </div>
+        )}
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Read pageview and comment count from Waline's data attributes after load
+  const observer = new MutationObserver(() => {
+    const pageviewEl = document.querySelector('.waline-pageview-count');
+    const commentEl = document.querySelector('.waline-comment-count');
+    if (pageviewEl) {
+      const pvDisplay = document.getElementById('guestbook-pageview');
+      if (pvDisplay) pvDisplay.textContent = pageviewEl.textContent || '0';
+    }
+    if (commentEl) {
+      const cmtDisplay = document.getElementById('guestbook-comment-count');
+      if (cmtDisplay) cmtDisplay.textContent = commentEl.textContent || '0';
+    }
+  });
+
+  const walineContainer = document.getElementById('waline-container');
+  if (walineContainer) {
+    observer.observe(walineContainer, { childList: true, subtree: true });
+  }
+</script>

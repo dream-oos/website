@@ -1,7 +1,16 @@
-﻿---
+---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import friendsData from '../data/friends.json';
 import { siteConfig } from '../data/site.config';
+// @ts-ignore — YAML imports handled by Vite plugin in astro.config.mjs
+import rawFriends from '../data/friends.yaml';
+
+const friendsData = (rawFriends ?? []) as Array<{
+  name: string;
+  avatar: string;
+  description: string;
+  url: string;
+  category: string;
+}>;
 ---
 
 <BaseLayout title={`Friends - ${siteConfig.name}`} description="My friends and recommended websites">

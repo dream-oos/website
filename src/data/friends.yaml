@@ -1,0 +1,15 @@
+# ============================================================
+#  friends.yaml — 友情链接配置
+#  name：名称
+#  avatar：头像 URL（支持外链）
+#  description：简短描述
+#  url：链接地址
+#  category：分类（如 技术博主 | 设计师 | 独立开发者）
+# ============================================================
+
+# 暂时为空，添加友链时在此填写，示例格式如下：
+# - name: 友链名称
+#   avatar: https://example.com/avatar.png
+#   description: 这里写一句简短的介绍
+#   url: https://example.com
+#   category: 技术博主

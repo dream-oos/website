@@ -40,7 +40,21 @@ function isActive(href: string) {
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href={`https://fonts.googleapis.com/css2?family=${encodeURIComponent(siteConfig.fonts.heading)}:wght@300;400;500;600;700;800&family=${encodeURIComponent(siteConfig.fonts.body)}:wght@300;400;500;600;700&family=${encodeURIComponent(siteConfig.fonts.code)}&display=swap`}
+      rel="stylesheet"
+    />
+    <style define:vars={{
+      fontBody: `"${siteConfig.fonts.body}", system-ui, sans-serif`,
+      fontHeading: `"${siteConfig.fonts.heading}", system-ui, sans-serif`,
+      fontCode: `"${siteConfig.fonts.code}", monospace`,
+    }}>
+      :root {
+        --font-body: var(--fontBody);
+        --font-heading: var(--fontHeading);
+        --font-code: var(--fontCode);
+      }
+    </style>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href={siteConfig.favicon} />

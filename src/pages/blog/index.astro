@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -26,7 +26,8 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
         <p class="text-xs font-medium text-accent mb-1.5 tracking-wider uppercase">Blog</p>
         <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3" id="blog-title">博客</h1>
         <p class="text-[var(--text-secondary)]">
-          分享技术心得与生活感悟，共 <span class="text-accent font-medium">{sortedPosts.length}</span> 篇文�?        </p>
+          分享技术心得与生活感悟，共 <span class="text-accent font-medium">{sortedPosts.length}</span> 篇文章
+        </p>
       </div>
 
       <!-- Tags -->
@@ -43,23 +44,21 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
             <div class="flex items-center gap-4 mb-6">
               <h2 class="text-lg font-bold text-accent tabular-nums">{year}</h2>
               <div class="flex-1 h-px bg-[var(--border-card)]"></div>
-              <span class="text-xs text-[var(--text-muted)]">{postsByYear[year].length} �?/span>
+              <span class="text-xs text-[var(--text-muted)]">{postsByYear[year].length} 篇</span>
             </div>
-            
+
             <div class="space-y-3">
               {postsByYear[year].map((post) => (
                 <a href={`/blog/${post.id}`}
                    class="group flex items-start gap-4 glass-card-hover p-4 sm:p-5"
                    id={`blog-post-${post.id}`}>
-                  <!-- Date -->
-                  <time 
+                  <time
                     datetime={post.data.pubDate.toISOString()}
                     class="text-xs text-[var(--text-muted)] tabular-nums whitespace-nowrap mt-0.5 hidden sm:block w-16"
                   >
                     {post.data.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
                   </time>
 
-                  <!-- Content -->
                   <div class="flex-1 min-w-0">
                     <h3 class="text-[15px] font-semibold group-hover:text-accent transition-colors leading-snug mb-1.5">
                       {post.data.title}
@@ -73,6 +72,17 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
                       ))}
                     </div>
                   </div>
+
+                  {post.data.cover && (
+                    <div class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-[var(--border-card)] group-hover:border-accent/30 transition-all">
+                      <img
+                        src={post.data.cover}
+                        alt={post.data.title}
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                 </a>
               ))}
             </div>

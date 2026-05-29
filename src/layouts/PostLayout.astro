@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from './BaseLayout.astro';
 import CommentSection from '../components/CommentSection.tsx';
 import { siteConfig } from '../data/site.config';
@@ -10,9 +10,10 @@ interface Props {
   updatedDate?: Date;
   tags?: string[];
   headings?: { depth: number; slug: string; text: string }[];
+  cover?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags = [], headings = [] } = Astro.props;
+const { title, description, pubDate, updatedDate, tags = [], headings = [], cover } = Astro.props;
 
 const content = await Astro.slots.render('default');
 const plainText = content.replace(/<[^>]*>/g, '');
@@ -25,7 +26,17 @@ const walineURL = siteConfig.comment.walineServerURL;
 ---
 
 <BaseLayout title={`${title} - ${siteConfig.name}`} description={description}>
-  <article class="pt-24 pb-16">
+  {cover && (
+    <div class="relative w-full h-56 sm:h-72 md:h-96 overflow-hidden" id="article-cover">
+      <img
+        src={cover}
+        alt={title}
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--bg-primary)]"></div>
+    </div>
+  )}
+  <article class={cover ? 'pb-16' : 'pt-24 pb-16'}>
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
 
       <!-- Header -->

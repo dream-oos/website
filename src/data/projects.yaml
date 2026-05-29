@@ -1,0 +1,17 @@
+# ============================================================
+#  projects.yaml — 项目列表配置
+#  每个项目包含：title（名称）、description（描述）、
+#  tags（技术栈）、github（源码链接）、demo（演示链接，可选）
+#  icon 可选值：Globe | Terminal | ListTodo | CloudSun | Package
+# ============================================================
+
+- title: Novel Studio
+  description: 一个基于 AI Agent 的小说创作工具，帮助作家构建故事、管理人物和章节，让写作更高效有趣。
+  tags:
+    - Python
+    - React
+    - TypeScript
+    - AI Agent
+  github: https://github.com/honestman9527/novel-studio
+  # demo: https://your-demo-url.com
+  icon: Globe

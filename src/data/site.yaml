@@ -1,0 +1,69 @@
+# ============================================================
+#  site.yaml — 个人网站全局配置
+#  直接在这里修改，无需改动任何代码文件
+# ============================================================
+
+# ── 基本信息 ────────────────────────────────────────────────
+name: Dreamer
+title: Dreamer
+description: 一个热爱代码与梦想的开发者的个人空间
+author: Dreamer
+avatar: /avatar.webp
+favicon: /favicon.png
+since: 2024
+
+# ── 副标题 / Tagline ────────────────────────────────────────
+tagline: Full-Stack Developer · Open Source Dreamer
+
+# ── 首页打字机文字 ───────────────────────────────────────────
+heroTexts:
+  - 一个热爱编程的 Dreamer
+  - 开源爱好者 & 技术写作者
+  - 终身学习者，不断探索
+  - 用代码构建梦想中的世界
+
+# ── 个人简介（关于页，每条为一段） ────────────────────────────
+bio:
+  - 你好！👋 我是一名热爱编程的开发者，专注于 Web 前端和全栈开发。
+  - 喜欢探索新技术，乐于分享所学，相信开源的力量。
+  - 工作之余，我喜欢阅读、摄影和折腾各种有趣的开源项目。
+  - 这个博客是我记录学习、思考和梦想的地方。
+
+# ── 社交链接（删除或注释掉某行即可禁用对应按钮） ──────────────
+social:
+  github: https://github.com/dream-oos
+  email: mailto:dreamer@dmsoul.com
+  bilibili: https://space.bilibili.com/1503382902
+  # twitter: https://twitter.com/yourhandle
+  # rss: /rss.xml
+
+# ── 字体配置（Google Fonts 字体名，直接填写即可） ─────────────
+# 常用推荐：
+#   正文：Noto Sans SC | Source Han Sans CN | LXGW WenKai
+#   标题：Inter | Outfit | Plus Jakarta Sans
+#   代码：JetBrains Mono | Fira Code | Source Code Pro
+fonts:
+  body: Noto Sans SC
+  heading: Inter
+  code: JetBrains Mono
+
+# ── 导航栏链接 ──────────────────────────────────────────────
+nav:
+  - text: 首页
+    href: /
+  - text: 博客
+    href: /blog
+  - text: 项目
+    href: /projects
+  - text: 留言板
+    href: /guestbook
+  - text: 关于
+    href: /about
+
+# ── 评论系统（Waline） ──────────────────────────────────────
+# 填入你的 Waline 服务端地址，留空则不显示评论
+comment:
+  walineServerURL: https://waline.7s.nz
+
+# ── 友链申请邮箱 ────────────────────────────────────────────
+friendsEmail: dreamer@dmsoul.com
