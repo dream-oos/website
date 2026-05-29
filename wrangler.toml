@@ -8,6 +8,6 @@
 #  等同于：astro build && wrangler deploy --config dist/server/wrangler.json
 # ============================================================
 
-name = "dreamer-website"
+name = "website"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
