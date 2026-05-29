@@ -1,4 +1,5 @@
----
+﻿---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 // @ts-ignore — YAML imports handled by Vite plugin in astro.config.mjs
 import rawProjects from '../data/projects.yaml';
@@ -19,6 +20,7 @@ const iconMap: Record<string, string> = {
   Terminal: '⌨️',
 };
 ---
+export const prerender = true;
 
 <BaseLayout title="项目 - Dreamer" description="我的开源项目和作品展示">
   <section class="pt-28 pb-16 px-5">

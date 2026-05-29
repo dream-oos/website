@@ -1,4 +1,5 @@
----
+﻿---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../data/site.config';
 // @ts-ignore — YAML imports handled by Vite plugin in astro.config.mjs
@@ -12,6 +13,7 @@ const friendsData = (rawFriends ?? []) as Array<{
   category: string;
 }>;
 ---
+export const prerender = true;
 
 <BaseLayout title={`Friends - ${siteConfig.name}`} description="My friends and recommended websites">
   <section class="pt-28 pb-16 px-5">

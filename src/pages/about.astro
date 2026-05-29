@@ -1,8 +1,10 @@
 ﻿---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { skills } from '../data/skills';
 import { siteConfig } from '../data/site.config';
 ---
+export const prerender = true;
 
 <BaseLayout title={`About - ${siteConfig.name}`} description={siteConfig.description}>
   <section class="pt-28 pb-16 px-5">

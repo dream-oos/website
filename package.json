@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro build && wrangler pages deploy dist"
+    "deploy": "astro build && wrangler deploy --config dist/server/wrangler.json"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.6.0",
     "@astrojs/react": "^5.0.5",
     "@fontsource-variable/geist": "^5.2.9",
     "@tailwindcss/vite": "^4.3.0",

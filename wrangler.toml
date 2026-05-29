@@ -1,9 +1,13 @@
 # ============================================================
-#  wrangler.toml — Cloudflare Pages 部署配置
+#  wrangler.toml — Cloudflare Workers 基础配置
+#
+#  注意：部署时使用 @astrojs/cloudflare 构建后自动生成的
+#        dist/server/wrangler.json（其中包含完整的入口和资源路径）
+#
+#  部署命令：pnpm deploy
+#  等同于：astro build && wrangler deploy --config dist/server/wrangler.json
 # ============================================================
 
 name = "dreamer-website"
-compatibility_date = "2024-01-01"
-
-# Cloudflare Pages 构建输出目录
-pages_build_output_dir = "./dist"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
