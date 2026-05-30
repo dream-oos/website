@@ -185,7 +185,11 @@ function isActive(href: string) {
 
     <!-- GSAP-driven animations: scroll-reveal + nav scroll hide -->
     <script>
-      import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap-init';
+      import gsap from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+      import { prefersReducedMotion } from '../lib/gsap-init';
+
+      gsap.registerPlugin(ScrollTrigger);
 
       // ── Scroll Reveal ──────────────────────────────────────
       // Replaces the CSS .scroll-animate observer.

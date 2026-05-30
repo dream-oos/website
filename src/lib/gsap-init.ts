@@ -1,29 +1,51 @@
 // ============================================================
 //  gsap-init.ts — GSAP initialization & shared animation utilities
+//  SSR-safe: browser-only code is guarded with typeof window checks.
 // ============================================================
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type { ScrollTrigger as ST } from 'gsap/ScrollTrigger';
 
-// Register plugins (tree-shakeable in GSAP 3.x)
-gsap.registerPlugin(ScrollTrigger);
+// ── SSR guard ────────────────────────────────────────────────
+const isBrowser = typeof window !== 'undefined';
 
-// ── Responsive & accessibility ──────────────────────────────
-const mm = gsap.matchMedia();
+// ── Plugin & matchMedia (lazy, browser-only) ─────────────────
+let ScrollTriggerModule: typeof ST | null = null;
+let mm: gsap.MatchMedia | null = null;
 
-// Respect prefers-reduced-motion: skip/duration=0 when user prefers reduced motion
-mm.add('(prefers-reduced-motion: reduce)', () => {
-  // We don't create animations here; this handler simply exists
-  // so matchMedia tracks the condition.
-  // Components read isReducedMotion below to adjust their animations.
-});
+function ensurePlugins(): typeof ST {
+  if (!isBrowser) {
+    throw new Error('GSAP plugins can only be used in the browser');
+  }
+  if (!ScrollTriggerModule) {
+    // Dynamic import avoids SSR issues
+    const st = require('gsap/ScrollTrigger') as typeof import('gsap/ScrollTrigger');
+    ScrollTriggerModule = st.ScrollTrigger;
+    gsap.registerPlugin(ScrollTriggerModule);
+  }
+  return ScrollTriggerModule;
+}
 
-// ── Named breakpoints for reusable responsive conditions ────
+function getMatchMedia(): gsap.MatchMedia {
+  if (!isBrowser) {
+    throw new Error('gsap.matchMedia() can only be used in the browser');
+  }
+  if (!mm) {
+    mm = gsap.matchMedia();
+    mm.add('(prefers-reduced-motion: reduce)', () => {
+      // Tracked so matchMedia condition is available.
+      // Components check prefersReducedMotion() independently.
+    });
+  }
+  return mm;
+}
+
+// ── Named breakpoints ────────────────────────────────────────
 const breakpoints = {
   isDesktop: '(min-width: 768px) and (hover: hover)',
   isMobile: '(max-width: 767px), (hover: none)',
 };
 
-// ── Shared defaults ─────────────────────────────────────────
+// ── Shared defaults (safe to call in SSR — GSAP core is SSR-safe) ──
 gsap.defaults({
   duration: 0.6,
   ease: 'power2.out',
@@ -31,35 +53,20 @@ gsap.defaults({
 
 // ── Shared utilities ────────────────────────────────────────
 
-/** Check if user prefers reduced motion (call after mount) */
+/** Check if user prefers reduced motion */
 export function prefersReducedMotion(): boolean {
-  if (typeof window === 'undefined') return false;
+  if (!isBrowser) return true; // SSR: assume reduced motion
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/** Create a ScrollTrigger with reduced-motion awareness */
-export function createScrollTrigger(
-  vars: gsap.plugins.ScrollTrigger.Vars
-): ScrollTrigger {
-  if (prefersReducedMotion()) {
-    return ScrollTrigger.create({
-      ...vars,
-      // In reduced motion, just toggle visibility immediately
-      onEnter() {
-        if (vars.onEnter) vars.onEnter();
-      },
-      onLeave() {
-        if (vars.onLeave) vars.onLeave();
-      },
-      onEnterBack() {
-        if (vars.onEnterBack) vars.onEnterBack();
-      },
-      onLeaveBack() {
-        if (vars.onLeaveBack) vars.onLeaveBack();
-      },
-    });
-  }
-  return ScrollTrigger.create(vars);
+/** Lazy access to ScrollTrigger (throws in SSR) */
+export function getScrollTrigger(): typeof ST {
+  return ensurePlugins();
+}
+
+/** Lazy access to matchMedia instance (throws in SSR) */
+export function getMM(): gsap.MatchMedia {
+  return getMatchMedia();
 }
 
 /** Animate elements with a staggered scroll reveal */
@@ -71,6 +78,7 @@ export function scrollReveal(
     duration?: number;
   }
 ): void {
+  if (!isBrowser) return;
   const { stagger = 0.08, y = 40, duration = 0.7 } = options ?? {};
 
   if (prefersReducedMotion()) {
@@ -78,6 +86,7 @@ export function scrollReveal(
     return;
   }
 
+  const ST = ensurePlugins();
   gsap.fromTo(
     elements,
     { opacity: 0, y },
@@ -101,10 +110,12 @@ export function parallax(
   element: gsap.DOMTarget,
   options?: { speed?: number; scrub?: boolean }
 ): void {
+  if (!isBrowser) return;
   const { speed = 0.3, scrub = true } = options ?? {};
 
   if (prefersReducedMotion()) return;
 
+  const ST = ensurePlugins();
   gsap.fromTo(
     element,
     { y: 0 },
@@ -121,13 +132,15 @@ export function parallax(
   );
 }
 
-/** Navigation show/hide on scroll direction (forward = hide) */
+/** Navigation show/hide on scroll direction */
 export function navScrollHide(navElement: gsap.DOMTarget): void {
+  if (!isBrowser) return;
   if (prefersReducedMotion()) return;
 
+  const ST = ensurePlugins();
   let lastScroll = 0;
 
-  ScrollTrigger.create({
+  ST.create({
     start: 'top -80',
     end: 'max',
     onUpdate(self) {
@@ -146,5 +159,6 @@ export function navScrollHide(navElement: gsap.DOMTarget): void {
 }
 
 // ── Exports ─────────────────────────────────────────────────
-export { gsap, ScrollTrigger, mm, breakpoints };
+export { gsap, breakpoints };
+export type { ST as ScrollTrigger };
 export default gsap;

@@ -125,7 +125,8 @@ const latestPosts = allPosts
 
   <!-- GSAP Hero entrance timeline -->
   <script>
-    import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap-init';
+    import gsap from 'gsap';
+    import { prefersReducedMotion } from '../lib/gsap-init';
 
     // Hero entrance: sequential fade-up with stagger
     const heroEls = document.querySelectorAll('#hero .scroll-animate');
