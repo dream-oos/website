@@ -1,5 +1,7 @@
-﻿import { useEffect, useState } from "react";
-import { Quote } from "lucide-react";
+import { useEffect, useState, useRef } from 'react';
+import { Quote } from 'lucide-react';
+import gsap from 'gsap';
+import { prefersReducedMotion } from '../lib/gsap-init';
 
 interface HitokotoData {
   hitokoto: string;
@@ -8,14 +10,16 @@ interface HitokotoData {
 }
 
 export default function Hitokoto() {
-  const [quote, setQuote] = useState("");
-  const [source, setSource] = useState("");
-  const [displayed, setDisplayed] = useState("");
+  const [quote, setQuote] = useState('');
+  const [source, setSource] = useState('');
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(true);
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const sourceRef = useRef<HTMLParagraphElement>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    fetch("https://v1.hitokoto.cn/?encode=json&c=a&c=b&c=c&c=d&c=i&c=k")
+    fetch('https://v1.hitokoto.cn/?encode=json&c=a&c=b&c=c&c=d&c=i&c=k')
       .then((r) => r.json())
       .then((data: HitokotoData) => {
         setQuote(data.hitokoto);
@@ -23,26 +27,52 @@ export default function Hitokoto() {
         setLoading(false);
       })
       .catch(() => {
-        setQuote("Code is poetry, and dreams are the horizon.");
-        setSource("Dreamer");
+        setQuote('Code is poetry, and dreams are the horizon.');
+        setSource('Dreamer');
         setLoading(false);
       });
   }, []);
 
+  // GSAP typewriter: animate displayed text character by character
   useEffect(() => {
-    if (!quote) return;
-    setDisplayed("");
-    setDone(false);
-    let i = 0;
-    const timer = setInterval(() => {
-      i++;
-      setDisplayed(quote.slice(0, i));
-      if (i >= quote.length) {
-        clearInterval(timer);
+    if (!quote || !textRef.current) return;
+
+    const reduceMotion = prefersReducedMotion();
+    const chars = quote.split('');
+    const obj = { count: 0 };
+
+    // GSAP cursor blink
+    if (cursorRef.current && !reduceMotion) {
+      const cursorTl = gsap.timeline({ repeat: -1, yoyo: true });
+      cursorTl.to(cursorRef.current, { opacity: 0.15, duration: 0.5, ease: 'power2.inOut' });
+    }
+
+    const tween = gsap.to(obj, {
+      count: chars.length,
+      duration: Math.max(0.8, chars.length * 0.04),
+      ease: 'none',
+      onUpdate: () => {
+        const idx = Math.floor(obj.count);
+        if (textRef.current) {
+          textRef.current.textContent = chars.slice(0, idx).join('');
+        }
+      },
+      onComplete: () => {
         setDone(true);
-      }
-    }, 55);
-    return () => clearInterval(timer);
+        // Animate source in
+        if (sourceRef.current) {
+          gsap.fromTo(
+            sourceRef.current,
+            { opacity: 0, y: 8 },
+            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+          );
+        }
+      },
+    });
+
+    return () => {
+      tween.kill();
+    };
   }, [quote]);
 
   if (loading) {
@@ -60,35 +90,35 @@ export default function Hitokoto() {
         <Quote
           size={14}
           className="shrink-0 mt-0.5 opacity-40"
-          style={{ color: "#3b9eff" }}
+          style={{ color: '#3b9eff' }}
         />
         <p
+          ref={textRef}
           className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed text-center"
           id="hitokoto-text"
         >
-          {displayed}
-          {!done && (
-            <span
-              className="inline-block w-px h-[1em] ml-0.5 align-middle"
-              style={{
-                background: "#3b9eff",
-                opacity: 0.8,
-                animation: "blink 1s step-end infinite",
-              }}
-            />
-          )}
+          {/* Text rendered via GSAP onUpdate */}
         </p>
+        {!done && (
+          <span
+            ref={cursorRef}
+            className="inline-block w-px h-[1em] ml-0.5 align-middle"
+            style={{ background: '#3b9eff', opacity: 0.8 }}
+          />
+        )}
         <Quote
           size={14}
           className="shrink-0 mt-0.5 rotate-180 opacity-40"
-          style={{ color: "#3b9eff" }}
+          style={{ color: '#3b9eff' }}
         />
       </div>
-      {done && source && (
-        <p className="text-xs text-[var(--text-muted)]" id="hitokoto-source">
-          -- {source}
-        </p>
-      )}
+      <p
+        ref={sourceRef}
+        className="text-xs text-[var(--text-muted)] opacity-0"
+        id="hitokoto-source"
+      >
+        {source && `-- ${source}`}
+      </p>
     </div>
   );
 }

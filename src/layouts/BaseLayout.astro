@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../lib/gsap-init';
 import ParticleBackground from '../components/ParticleBackground.tsx';
 import MouseGlow from '../components/MouseGlow.tsx';
 import BackToTop from '../components/BackToTop.tsx';
@@ -77,7 +78,7 @@ function isActive(href: string) {
     <MouseGlow client:load />
 
     <!-- Navigation -->
-    <header id="main-nav" class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-500">
+    <header id="main-nav" class="fixed top-0 left-0 right-0 z-50 glass-nav">
       <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <!-- Logo -->
@@ -182,22 +183,59 @@ function isActive(href: string) {
     <!-- Back to Top -->
     <BackToTop client:load />
 
-    <!-- Scroll animation observer -->
-    <script is:inline>
-      document.addEventListener('DOMContentLoaded', () => {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-              }
-            });
+    <!-- GSAP-driven animations: scroll-reveal + nav scroll hide -->
+    <script>
+      import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap-init';
+
+      // ── Scroll Reveal ──────────────────────────────────────
+      // Replaces the CSS .scroll-animate observer.
+      // CSS .scroll-animate is kept as a no-JS fallback (initial opacity:0, transform).
+      // Skip hero section — handled by index.astro's hero timeline.
+      if (!prefersReducedMotion()) {
+        const revealEls = document.querySelectorAll('.scroll-animate:not(#hero .scroll-animate)');
+        if (revealEls.length > 0) {
+          gsap.fromTo(
+            revealEls,
+            { opacity: 0, y: 40 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              stagger: 0.06,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: revealEls[0],
+                start: 'top 92%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+      } else {
+        // Reduced motion: just show everything immediately
+        gsap.set('.scroll-animate', { opacity: 1, y: 0 });
+      }
+
+      // ── Nav Scroll Hide ────────────────────────────────────
+      // Hide nav when scrolling down past hero, show on scroll up
+      const nav = document.getElementById('main-nav');
+      if (nav && !prefersReducedMotion()) {
+        let lastScroll = 0;
+        ScrollTrigger.create({
+          start: 'top -120',
+          end: 'max',
+          onUpdate(self) {
+            const current = self.scroll();
+            const goingDown = current > lastScroll;
+            if (goingDown && current > 100) {
+              gsap.to(nav, { yPercent: -100, duration: 0.3, ease: 'power2.inOut' });
+            } else {
+              gsap.to(nav, { yPercent: 0, duration: 0.3, ease: 'power2.inOut' });
+            }
+            lastScroll = current;
           },
-          { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-        );
-        document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
-      });
+        });
+      }
     </script>
   </body>
 </html>

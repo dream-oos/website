@@ -1,51 +1,45 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { breakpoints } from '../lib/gsap-init';
 
 export default function MouseGlow() {
-  const [isDesktop, setIsDesktop] = useState(false);
-  const posRef = useRef({ x: 0, y: 0 });
-  const targetRef = useRef({ x: 0, y: 0 });
+  const [enabled, setEnabled] = useState(false);
   const glowRef = useRef<HTMLDivElement>(null);
-  const animRef = useRef<number>(0);
+  const targetX = useRef<gsap.QuickToFunc | null>(null);
+  const targetY = useRef<gsap.QuickToFunc | null>(null);
 
   useEffect(() => {
-    // Only show on desktop (non-touch, wide screens)
-    const mql = window.matchMedia("(min-width: 768px) and (hover: hover)");
-    const handleChange = () => setIsDesktop(mql.matches);
-    handleChange();
-    mql.addEventListener("change", handleChange);
-    return () => mql.removeEventListener("change", handleChange);
+    const mm = gsap.matchMedia();
+    mm.add(breakpoints.isDesktop, (ctx) => {
+      const { conditions } = ctx;
+      if (!conditions?.isDesktop) return;
+
+      setEnabled(true);
+
+      const el = glowRef.current;
+      if (!el) return;
+
+      // Use quickTo for sub-pixel smooth following (no rAF needed)
+      targetX.current = gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power3.out' });
+      targetY.current = gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power3.out' });
+
+      const handleMouseMove = (e: MouseEvent) => {
+        targetX.current?.(e.clientX - 250);
+        targetY.current?.(e.clientY - 250);
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        setEnabled(false);
+      };
+    });
+
+    return () => mm.revert();
   }, []);
 
-  useEffect(() => {
-    if (!isDesktop) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      targetRef.current = { x: e.clientX, y: e.clientY };
-    };
-
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-    const animate = () => {
-      posRef.current.x = lerp(posRef.current.x, targetRef.current.x, 0.08);
-      posRef.current.y = lerp(posRef.current.y, targetRef.current.y, 0.08);
-
-      if (glowRef.current) {
-        glowRef.current.style.transform = `translate(${posRef.current.x - 250}px, ${posRef.current.y - 250}px)`;
-      }
-
-      animRef.current = requestAnimationFrame(animate);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    animRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animRef.current);
-    };
-  }, [isDesktop]);
-
-  if (!isDesktop) return null;
+  if (!enabled) return null;
 
   return (
     <div
@@ -54,9 +48,9 @@ export default function MouseGlow() {
       style={{
         width: 500,
         height: 500,
-        borderRadius: "50%",
+        borderRadius: '50%',
         background:
-          "radial-gradient(circle, var(--color-accent) 0%, transparent 70%)",
+          'radial-gradient(circle, var(--color-accent) 0%, transparent 70%)',
         opacity: 0.06,
       }}
       aria-hidden="true"

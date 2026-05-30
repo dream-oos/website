@@ -11,12 +11,12 @@ const latestPosts = allPosts
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 6);
 ---
-export const prerender = true;
 
 <BaseLayout title={`${siteConfig.name} - Homepage`} description={siteConfig.description}>
   <section class="relative flex items-center justify-center min-h-[100svh] px-5" id="hero">
     <div class="text-center max-w-xl mx-auto">
-      <div class="relative inline-block mb-8 scroll-animate" id="hero-avatar">
+      <!-- Avatar -->
+      <div class="relative inline-block mb-8 scroll-animate" id="hero-avatar" data-anim="fadeUp">
         <div class="avatar-ring w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden">
           <img src={siteConfig.avatar} alt={siteConfig.name} width="128" height="128"
             class="w-full h-full rounded-full object-cover"
@@ -25,23 +25,28 @@ export const prerender = true;
         <span class="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-emerald-400 border-2 border-[var(--bg-primary)] shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
       </div>
 
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-3 tracking-tight scroll-animate scroll-animate-delay-1" id="hero-name">
+      <!-- Name -->
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-3 tracking-tight scroll-animate" id="hero-name" data-anim="fadeUp">
         <span class="text-gradient">{siteConfig.name}</span>
       </h1>
 
-      <p class="text-sm text-[var(--text-muted)] mb-5 scroll-animate scroll-animate-delay-2">
+      <!-- Subtitle -->
+      <p class="text-sm text-[var(--text-muted)] mb-5 scroll-animate" data-anim="fadeUp">
         {siteConfig.tagline}
       </p>
 
-      <div class="h-7 mb-6 text-base sm:text-lg text-[var(--text-secondary)] scroll-animate scroll-animate-delay-3" id="typewriter-container">
+      <!-- Typewriter -->
+      <div class="h-7 mb-6 text-base sm:text-lg text-[var(--text-secondary)] scroll-animate" id="typewriter-container" data-anim="fadeUp">
         <TypeWriter client:load texts={siteConfig.heroTexts} typingSpeed={80} deletingSpeed={40} pauseDuration={2500} />
       </div>
 
-      <div class="mb-10 scroll-animate scroll-animate-delay-4" id="hitokoto-wrapper">
+      <!-- Hitokoto -->
+      <div class="mb-10 scroll-animate" id="hitokoto-wrapper" data-anim="fadeUp">
         <Hitokoto client:load />
       </div>
 
-      <div class="flex items-center justify-center gap-3 mb-16 scroll-animate scroll-animate-delay-4" id="hero-social">
+      <!-- Social Links -->
+      <div class="flex items-center justify-center gap-3 mb-16 scroll-animate" id="hero-social" data-anim="fadeUp">
         {siteConfig.social.github && (
           <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer"
             class="w-11 h-11 rounded-xl glass-card flex items-center justify-center text-[var(--text-muted)] hover:text-accent hover:border-accent/25 hover:shadow-[0_0_20px_rgba(59,158,255,0.15)] transition-all duration-300"
@@ -71,6 +76,7 @@ export const prerender = true;
         )}
       </div>
 
+      <!-- Scroll indicator -->
       <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce-slow">
         <a href="#latest-posts" class="text-[var(--text-muted)] hover:text-accent transition-colors" aria-label="scroll">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -81,6 +87,7 @@ export const prerender = true;
     </div>
   </section>
 
+  <!-- Latest Posts -->
   <section class="py-24 px-5" id="latest-posts">
     <div class="mx-auto max-w-5xl">
       <div class="flex items-end justify-between mb-10 scroll-animate">
@@ -115,4 +122,57 @@ export const prerender = true;
       </div>
     </div>
   </section>
+
+  <!-- GSAP Hero entrance timeline -->
+  <script>
+    import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap-init';
+
+    // Hero entrance: sequential fade-up with stagger
+    const heroEls = document.querySelectorAll('#hero .scroll-animate');
+    if (heroEls.length > 0) {
+      if (prefersReducedMotion()) {
+        gsap.set(heroEls, { opacity: 1, y: 0 });
+      } else {
+        const tl = gsap.timeline({ defaults: { duration: 0.7, ease: 'power3.out' } });
+        tl.fromTo(
+          heroEls,
+          { opacity: 0, y: 48 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.12,
+          }
+        );
+      }
+    }
+
+    // Latest posts: scroll-triggered reveal
+    const postCards = document.querySelectorAll('#latest-posts .scroll-animate');
+    if (postCards.length > 0) {
+      if (prefersReducedMotion()) {
+        gsap.set(postCards, { opacity: 1, y: 0 });
+      } else {
+        // Section header first
+        const header = postCards[0];
+        const cards = Array.from(postCards).slice(1);
+
+        gsap.fromTo(
+          postCards,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.06,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '#latest-posts',
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }
+  </script>
 </BaseLayout>

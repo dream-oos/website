@@ -1,6 +1,8 @@
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import { Calendar, ArrowRight } from "lucide-react";
-import TagFilter from "./TagFilter";
+import { useState, useMemo, useRef, useCallback } from 'react';
+import { Calendar, ArrowRight } from 'lucide-react';
+import TagFilter from './TagFilter';
+import gsap from 'gsap';
+import { prefersReducedMotion } from '../lib/gsap-init';
 
 interface Post {
   id: string;
@@ -16,70 +18,76 @@ interface BlogListProps {
 
 function PostCard({ post, index }: { post: Post; index: number }) {
   const cardRef = useRef<HTMLAnchorElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const qxRef = useRef<gsap.QuickToFunc | null>(null);
+  const qyRef = useRef<gsap.QuickToFunc | null>(null);
 
-  // Scroll-triggered entrance animation
-  useEffect(() => {
+  // Register GSAP quickTo for hover tilt
+  const handleMouseEnter = useCallback(() => {
     const el = cardRef.current;
-    if (!el) return;
+    if (!el || prefersReducedMotion()) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
+    if (!qxRef.current) {
+      qxRef.current = gsap.quickTo(el, 'rotateY', {
+        duration: 0.5,
+        ease: 'power3.out',
+      });
+      qyRef.current = gsap.quickTo(el, 'rotateX', {
+        duration: 0.5,
+        ease: 'power3.out',
+      });
+    }
   }, []);
 
-  // Hover tilt effect
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       const el = cardRef.current;
-      if (!el) return;
+      if (!el || !qxRef.current || !qyRef.current) return;
 
       const rect = el.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -4;
-      const rotateY = ((x - centerX) / centerX) * 4;
+      const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -5;
+      const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 5;
 
-      el.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
+      qxRef.current(rotateX);
+      qyRef.current(rotateY);
+
+      gsap.to(el, { scale: 1.015, duration: 0.5, ease: 'power2.out' });
     },
     []
   );
 
   const handleMouseLeave = useCallback(() => {
     const el = cardRef.current;
-    if (el) {
-      el.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)";
-    }
+    if (!el) return;
+
+    gsap.to(el, {
+      rotateX: 0,
+      rotateY: 0,
+      scale: 1,
+      duration: 0.6,
+      ease: 'power3.out',
+    });
   }, []);
 
-  const formattedDate = new Date(post.pubDate).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+  const formattedDate = new Date(post.pubDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
   });
 
   return (
     <a
       ref={cardRef}
       href={`/blog/${post.id}`}
-      className={`block glass-card p-5 transition-all duration-500 ease-out will-change-transform
-        hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 group
-        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      className="block glass-card p-5 opacity-0 translate-y-8
+        hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 group"
       style={{
+        transformStyle: 'preserve-3d',
+        perspective: '800px',
         transitionDelay: `${index * 60}ms`,
-        transformStyle: "preserve-3d",
       }}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -120,6 +128,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
 
 export default function BlogList({ posts }: BlogListProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Extract all unique tags
   const allTags = useMemo(() => {
@@ -148,14 +157,36 @@ export default function BlogList({ posts }: BlogListProps) {
       if (!groups[year]) groups[year] = [];
       groups[year].push(post);
     }
-    // Sort years descending
     return Object.entries(groups).sort(([a], [b]) => Number(b) - Number(a));
   }, [filteredPosts]);
+
+  // GSAP ScrollTrigger entrance for cards
+  const setCardRefs = useCallback(
+    (el: HTMLAnchorElement | null) => {
+      if (!el || prefersReducedMotion()) {
+        if (el) gsap.set(el, { opacity: 1, y: 0 });
+        return;
+      }
+
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 92%',
+          toggleActions: 'play none none none',
+        },
+      });
+    },
+    []
+  );
 
   let cardIndex = 0;
 
   return (
-    <div className="space-y-8">
+    <div ref={containerRef} className="space-y-8">
       {/* Tag filter */}
       <TagFilter
         tags={allTags}
