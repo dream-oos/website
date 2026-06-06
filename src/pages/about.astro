@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+<BaseLayout title="关于" description={site.bio[0]}>
+  <article class="container prose">
+    <h1>关于</h1>
+    {site.bio.map((para) => <p>{para}</p>)}
+  </article>
+</BaseLayout>
