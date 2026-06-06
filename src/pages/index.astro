@@ -1,6 +1,44 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import PostList from '../components/PostList.astro';
+import { getRecentPosts, getFeaturedProjects } from '../lib/content';
+import { site } from '../data/site';
+
+const posts = await getCollection('blog');
+const projects = await getCollection('projects');
+const recent = getRecentPosts(posts, 5);
+const featured = getFeaturedProjects(projects, 4);
 ---
 <BaseLayout>
-  <div class="container"><h1>建设中</h1></div>
+  <div class="container">
+    <Hero />
+
+    <section class="section" id="about">
+      <p class="eyebrow">关于</p>
+      {site.bio.map((para) => <p>{para}</p>)}
+      <p class="more"><a href="/about">了解更多 →</a></p>
+    </section>
+
+    <section class="section" id="projects">
+      <p class="eyebrow">作品</p>
+      <div class="grid">
+        {featured.map((project) => <ProjectCard project={project} />)}
+      </div>
+      <p class="more"><a href="/projects">全部作品 →</a></p>
+    </section>
+
+    <section class="section" id="writing">
+      <p class="eyebrow">最近写的</p>
+      <PostList posts={recent} />
+      <p class="more"><a href="/blog">全部文章 →</a></p>
+    </section>
+  </div>
 </BaseLayout>
+<style>
+  .grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+  @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .more { margin-top: 1rem; font-size: .85rem; }
+</style>
