@@ -1,0 +1,6 @@
+# Brainstorming visual companion
+.superpowers/
+
+# OS files
+.DS_Store
+Thumbs.db
