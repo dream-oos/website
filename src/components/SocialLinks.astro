@@ -1,0 +1,14 @@
+---
+import type { SocialLink } from '../data/site';
+interface Props { links: SocialLink[]; }
+const { links } = Astro.props;
+---
+<ul class="socials">
+  {links.map((l) => (
+    <li><a href={l.href} rel="me">{l.label}</a></li>
+  ))}
+</ul>
+<style>
+  .socials { list-style: none; display: flex; gap: .75rem; padding: 0; flex-wrap: wrap; }
+  .socials a { font-size: .85rem; }
+</style>
