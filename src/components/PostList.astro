@@ -1,0 +1,21 @@
+---
+import type { PostEntry } from '../content/schemas';
+interface Props { posts: PostEntry[]; }
+const { posts } = Astro.props;
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<ul class="post-list">
+  {posts.map((post) => (
+    <li>
+      <a href={`/blog/${post.id}`}>{post.data.title}</a>
+      <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+    </li>
+  ))}
+</ul>
+<style>
+  .post-list { list-style: none; padding: 0; }
+  .post-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-block: .6rem; border-bottom: 1px solid var(--color-border); }
+  .post-list a { color: var(--color-text); }
+  .post-list a:hover { color: var(--color-accent); }
+  .post-list time { color: var(--color-text-secondary); font-size: .8rem; white-space: nowrap; }
+</style>
