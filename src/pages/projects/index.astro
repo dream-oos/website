@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getFeaturedProjects } from '../../lib/content';
+
+const projects = await getCollection('projects');
+const all = getFeaturedProjects(projects, projects.length);
+---
+<BaseLayout title="作品" description="我做过的一些项目和作品">
+  <div class="container">
+    <h1>作品</h1>
+    <div class="grid">
+      {all.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .grid { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
+  @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+</style>
