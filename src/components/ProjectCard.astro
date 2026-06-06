@@ -1,0 +1,26 @@
+---
+import type { ProjectEntry } from '../content/schemas';
+interface Props { project: ProjectEntry; }
+const { project } = Astro.props;
+const { title, year, description, tags = [], link } = project.data;
+const external = Boolean(link);
+const href = link ?? `/projects/${project.id}`;
+---
+<a class="card" href={href} {...(external ? { target: '_blank', rel: 'noopener' } : {})}>
+  <div class="card__head">
+    <h3>{title}</h3>
+    <span class="muted year">{year}</span>
+  </div>
+  <p class="muted desc">{description}</p>
+  {tags.length > 0 && <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>}
+</a>
+<style>
+  .card { display: block; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 1.1rem 1.2rem; color: var(--color-text); transition: border-color .15s ease, transform .15s ease; }
+  .card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  .card__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .card__head h3 { font-size: 1.1rem; }
+  .year { font-size: .8rem; }
+  .desc { font-size: .9rem; margin-top: .35rem; }
+  .tags { list-style: none; display: flex; gap: .4rem; flex-wrap: wrap; padding: 0; margin-top: .7rem; }
+  .tags li { font-size: .7rem; color: var(--color-text-secondary); border: 1px solid var(--color-border); border-radius: 999px; padding: .1rem .55rem; }
+</style>
