@@ -4,3 +4,8 @@
 # OS files
 .DS_Store
 Thumbs.db
+
+# Node / Astro
+node_modules/
+dist/
+.astro/
