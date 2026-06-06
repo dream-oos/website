@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import { site } from './src/data/site';
+import { site } from './src/config/site';
 
 export default defineConfig({
   site: site.url,

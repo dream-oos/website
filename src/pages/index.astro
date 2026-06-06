@@ -5,7 +5,7 @@ import Hero from '../components/Hero.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import PostList from '../components/PostList.astro';
 import { getRecentPosts, getFeaturedProjects } from '../lib/content';
-import { site } from '../data/site';
+import { site } from '../config/site';
 
 const posts = await getCollection('blog');
 const projects = await getCollection('projects');

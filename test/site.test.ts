@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { site } from '../src/data/site';
+import { site } from '../src/config/site';
 
 describe('site config', () => {
   it('有必填字段', () => {

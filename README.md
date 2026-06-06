@@ -5,17 +5,17 @@
 ## 本地开发
 
 ```bash
-npm install
-npm run dev        # 本地预览 http://localhost:4321
-npm run build      # 生成 dist/
-npm run preview    # 预览构建产物
-npm run check      # 类型与内容校验
-npm run test       # 单元/组件测试
+pnpm install
+pnpm dev        # 本地预览 http://localhost:4321
+pnpm build      # 生成 dist/
+pnpm preview    # 预览构建产物
+pnpm check      # 类型与内容校验
+pnpm test       # 单元/组件测试
 ```
 
 ## 改成你自己的
 
-1. 编辑 `src/data/site.ts`:名字、简介、邮箱、社交链接、站点 URL。
+1. 编辑 `src/config/site.ts`:名字、简介、邮箱、社交链接、站点 URL。
 2. 头像:把图片放进 `src/assets/`(或 `public/`),把路径填到 `site.avatar`。
 
 ## 写文章
@@ -44,4 +44,4 @@ draft: false
 
 1. 把仓库推到 GitHub/GitLab。
 2. 在 Vercel 选 Import Project,框架会被自动识别为 Astro(Build: `astro build`,Output: `dist`)。
-3. 部署后把 `src/data/site.ts` 的 `url` 改为实际域名,重新部署(用于 SEO / canonical / RSS 的绝对链接)。自定义域名可在 Vercel 后台绑定。
+3. 部署后把 `src/config/site.ts` 的 `url` 改为实际域名,重新部署(用于 SEO / canonical / RSS 的绝对链接)。自定义域名可在 Vercel 后台绑定。
