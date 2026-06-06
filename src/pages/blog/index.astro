@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getRecentPosts } from '../../lib/content';
+
+const posts = await getCollection('blog');
+const all = getRecentPosts(posts, posts.length);
+---
+<BaseLayout title="博客" description="我写的文章和随笔">
+  <div class="container">
+    <h1>博客</h1>
+    <PostList posts={all} />
+  </div>
+</BaseLayout>
