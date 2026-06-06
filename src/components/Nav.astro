@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site';
+const links = [
+  { href: '/about', label: '关于' },
+  { href: '/projects', label: '作品' },
+  { href: '/blog', label: '博客' },
+];
+const path = Astro.url?.pathname ?? '';
+---
+<nav class="site-nav container container--wide">
+  <a class="brand" href="/">{site.name}</a>
+  <ul>
+    {links.map((l) => (
+      <li><a href={l.href} aria-current={path.startsWith(l.href) ? 'page' : undefined}>{l.label}</a></li>
+    ))}
+  </ul>
+</nav>
+<style>
+  .site-nav { display: flex; align-items: center; justify-content: space-between; padding-block: 1.25rem; }
+  .brand { font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-text); }
+  .site-nav ul { list-style: none; display: flex; gap: 1.1rem; padding: 0; }
+  .site-nav ul a { color: var(--color-text-secondary); font-size: .9rem; }
+  .site-nav ul a[aria-current='page'] { color: var(--color-accent); }
+</style>
