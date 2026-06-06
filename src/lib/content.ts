@@ -1,18 +1,19 @@
-import type { PostEntry, ProjectEntry } from '../content/schemas';
+type PostLike = { data: { date: Date; draft?: boolean } };
+type ProjectLike = { data: { year: number; order?: number } };
 
-export function excludeDrafts(posts: PostEntry[]): PostEntry[] {
+export function excludeDrafts<T extends PostLike>(posts: T[]): T[] {
   return posts.filter((p) => !p.data.draft);
 }
 
-export function sortByDateDesc(posts: PostEntry[]): PostEntry[] {
+export function sortByDateDesc<T extends PostLike>(posts: T[]): T[] {
   return [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-export function getRecentPosts(posts: PostEntry[], limit: number): PostEntry[] {
+export function getRecentPosts<T extends PostLike>(posts: T[], limit: number): T[] {
   return sortByDateDesc(excludeDrafts(posts)).slice(0, limit);
 }
 
-export function getFeaturedProjects(projects: ProjectEntry[], limit: number): ProjectEntry[] {
+export function getFeaturedProjects<T extends ProjectLike>(projects: T[], limit: number): T[] {
   const sorted = [...projects].sort((a, b) => {
     const ao = a.data.order ?? Number.POSITIVE_INFINITY;
     const bo = b.data.order ?? Number.POSITIVE_INFINITY;
