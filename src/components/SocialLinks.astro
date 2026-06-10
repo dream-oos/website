@@ -9,6 +9,14 @@ const { links } = Astro.props;
   ))}
 </ul>
 <style>
-  .socials { list-style: none; display: flex; gap: .75rem; padding: 0; flex-wrap: wrap; }
-  .socials a { font-size: .85rem; }
+  .socials { list-style: none; display: flex; gap: .5rem; padding: 0; flex-wrap: wrap; }
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    border-radius: 999px;
+    padding-inline: .15rem;
+    font-size: .86rem;
+    line-height: 1;
+  }
 </style>

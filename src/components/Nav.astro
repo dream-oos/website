@@ -16,9 +16,17 @@ const path = Astro.url?.pathname ?? '';
   </ul>
 </nav>
 <style>
-  .site-nav { display: flex; align-items: center; justify-content: space-between; padding-block: 1.25rem; }
-  .brand { font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-text); }
-  .site-nav ul { list-style: none; display: flex; gap: 1.1rem; padding: 0; }
-  .site-nav ul a { color: var(--color-text-secondary); font-size: .9rem; }
+  .site-nav {
+    min-height: 4.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: .85rem;
+  }
+
+  .brand { font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-text); letter-spacing: -0.015em; }
+  .site-nav ul { list-style: none; display: flex; gap: .45rem; padding: 0; }
+  .site-nav ul a { display: inline-flex; align-items: center; min-height: 2rem; border-radius: 999px; padding-inline: .55rem; color: var(--color-text-secondary); font-size: .9rem; line-height: 1; transition: background-color .15s ease, color .15s ease; }
+  .site-nav ul a:hover { background: color-mix(in srgb, var(--color-surface) 72%, transparent); color: var(--color-text); }
   .site-nav ul a[aria-current='page'] { color: var(--color-accent); }
 </style>

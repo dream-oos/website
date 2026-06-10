@@ -3,14 +3,44 @@ import SocialLinks from './SocialLinks.astro';
 import { site } from '../config/site';
 ---
 <header class="hero">
-  {site.avatar && <img class="hero__avatar" src={site.avatar} alt={site.name} width="72" height="72" />}
-  <h1>你好,我是{site.name}</h1>
-  <p class="muted hero__tagline">{site.tagline}</p>
-  <SocialLinks links={site.socials} />
+  <div class="hero__copy">
+    {site.avatar && <img class="hero__avatar" src={site.avatar} alt={site.name} width="72" height="72" />}
+    <h1>你好,我是{site.name}</h1>
+    <p class="muted hero__tagline">{site.tagline}</p>
+  </div>
+  <div class="hero__links" aria-label="社交链接">
+    <SocialLinks links={site.socials} />
+  </div>
 </header>
 <style>
-  .hero { text-align: center; display: flex; flex-direction: column; align-items: center; gap: .6rem; padding-block: 2rem 1rem; }
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1.5rem;
+    padding-block: clamp(3rem, 8vw, 5.5rem) clamp(1.75rem, 4vw, 2.5rem);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  }
+
+  .hero__copy {
+    display: grid;
+    justify-items: start;
+    gap: .65rem;
+  }
+
   .hero__avatar { border-radius: 50%; background: var(--color-border); }
-  .hero__tagline { font-size: .95rem; }
-  .hero :global(.socials) { justify-content: center; margin-top: .4rem; }
+  .hero__tagline { max-width: 32rem; font-size: clamp(.98rem, 1.5vw, 1.1rem); }
+  .hero__links { padding-bottom: .18rem; }
+  .hero :global(.socials) { justify-content: flex-end; }
+
+  @media (max-width: 640px) {
+    .hero {
+      grid-template-columns: 1fr;
+      align-items: start;
+      padding-block: 2.4rem 1.5rem;
+    }
+
+    .hero__links { padding-bottom: 0; }
+    .hero :global(.socials) { justify-content: flex-start; }
+  }
 </style>

@@ -15,12 +15,29 @@ const href = link ?? `/projects/${project.id}`;
   {tags.length > 0 && <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>}
 </a>
 <style>
-  .card { display: block; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 1.1rem 1.2rem; color: var(--color-text); transition: border-color .15s ease, transform .15s ease; }
-  .card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  .card {
+    min-height: 11.25rem;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.3rem;
+    color: var(--color-text);
+    transition: border-color .18s ease, background-color .18s ease, transform .18s ease;
+  }
+
+  .card:hover {
+    background: var(--color-surface);
+    border-color: color-mix(in srgb, var(--color-accent) 72%, var(--color-border));
+    transform: translateY(-2px);
+  }
+
+  .card:active { transform: translateY(0); }
   .card__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
-  .card__head h3 { font-size: 1.1rem; }
-  .year { font-size: .8rem; }
-  .desc { font-size: .9rem; margin-top: .35rem; }
-  .tags { list-style: none; display: flex; gap: .4rem; flex-wrap: wrap; padding: 0; margin-top: .7rem; }
-  .tags li { font-size: .7rem; color: var(--color-text-secondary); border: 1px solid var(--color-border); border-radius: 999px; padding: .1rem .55rem; }
+  .card__head h3 { font-size: 1.12rem; line-height: 1.35; }
+  .year { font-size: .8rem; font-variant-numeric: tabular-nums; }
+  .desc { max-width: 32rem; font-size: .92rem; line-height: 1.65; margin-top: .55rem; }
+  .tags { list-style: none; display: flex; gap: .45rem; flex-wrap: wrap; padding: 0; margin-top: .85rem; }
+  .tags li { font-size: .72rem; color: var(--color-text-secondary); border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent); border-radius: 999px; padding: .12rem .58rem; }
 </style>

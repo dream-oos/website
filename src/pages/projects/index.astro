@@ -8,7 +8,7 @@ const projects = await getCollection('projects');
 const all = getFeaturedProjects(projects, projects.length);
 ---
 <BaseLayout title="作品" description="我做过的一些项目和作品">
-  <div class="container">
+  <div class="container container--wide page-shell">
     <h1>作品</h1>
     <div class="grid">
       {all.map((project) => <ProjectCard project={project} />)}
@@ -16,6 +16,7 @@ const all = getFeaturedProjects(projects, projects.length);
   </div>
 </BaseLayout>
 <style>
-  .grid { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
-  @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .page-shell { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
+  .grid { display: grid; gap: 1.1rem; grid-template-columns: 1fr; margin-top: 1.6rem; }
+  @media (min-width: 720px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>

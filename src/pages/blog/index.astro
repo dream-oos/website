@@ -8,8 +8,12 @@ const posts = await getCollection('blog');
 const all = getRecentPosts(posts, posts.length);
 ---
 <BaseLayout title="博客" description="我写的文章和随笔">
-  <div class="container">
+  <div class="container page-shell">
     <h1>博客</h1>
     <PostList posts={all} />
   </div>
 </BaseLayout>
+<style>
+  .page-shell { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
+  .page-shell :global(.post-list) { margin-top: 1.25rem; }
+</style>

@@ -9,11 +9,12 @@ const fmt = date.toISOString().slice(0, 10);
     <h1>{title}</h1>
     <p class="muted post-meta">
       <time datetime={date.toISOString()}>{fmt}</time>
-      {tags.length > 0 && <span> · {tags.join(' · ')}</span>}
+      {tags.length > 0 && <span> / {tags.join(' / ')}</span>}
     </p>
     <slot />
   </article>
 </BaseLayout>
 <style>
-  .post-meta { font-size: .85rem; margin-top: -.5rem; margin-bottom: 1.5rem; }
+  .post-meta { font-size: .85rem; margin-top: -.35rem; margin-bottom: 1.5rem; font-variant-numeric: tabular-nums; }
+  article { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
 </style>

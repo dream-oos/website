@@ -13,13 +13,17 @@ const recent = getRecentPosts(posts, 5);
 const featured = getFeaturedProjects(projects, 4);
 ---
 <BaseLayout>
-  <div class="container">
+  <div class="container container--wide home-shell">
     <Hero />
 
-    <section class="section" id="about">
-      <p class="eyebrow">关于</p>
-      {site.bio.map((para) => <p>{para}</p>)}
-      <p class="more"><a href="/about">了解更多 →</a></p>
+    <section class="section intro-section" id="about">
+      <div>
+        <p class="eyebrow">关于</p>
+      </div>
+      <div class="intro-section__body">
+        {site.bio.map((para) => <p>{para}</p>)}
+        <p class="more"><a href="/about">了解更多 →</a></p>
+      </div>
     </section>
 
     <section class="section" id="projects">
@@ -30,7 +34,7 @@ const featured = getFeaturedProjects(projects, 4);
       <p class="more"><a href="/projects">全部作品 →</a></p>
     </section>
 
-    <section class="section" id="writing">
+    <section class="section writing-section" id="writing">
       <p class="eyebrow">最近写的</p>
       <PostList posts={recent} />
       <p class="more"><a href="/blog">全部文章 →</a></p>
@@ -38,7 +42,36 @@ const featured = getFeaturedProjects(projects, 4);
   </div>
 </BaseLayout>
 <style>
-  .grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
-  @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
-  .more { margin-top: 1rem; font-size: .85rem; }
+  .home-shell { padding-top: .5rem; }
+  .intro-section {
+    display: grid;
+    grid-template-columns: minmax(7rem, .34fr) minmax(0, .66fr);
+    gap: clamp(1.5rem, 5vw, 3rem);
+    align-items: start;
+    max-width: 920px;
+  }
+
+  .intro-section__body {
+    max-width: 620px;
+    font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+  }
+
+  .intro-section__body p + p { margin-top: .55rem; }
+
+  .grid {
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: 1fr;
+  }
+
+  .writing-section { max-width: 760px; }
+  .more { margin-top: 1rem; font-size: .9rem; }
+
+  @media (min-width: 720px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 700px) {
+    .intro-section { grid-template-columns: 1fr; gap: .75rem; }
+  }
 </style>

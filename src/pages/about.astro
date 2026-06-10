@@ -3,8 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 ---
 <BaseLayout title="关于" description={site.bio[0]}>
-  <article class="container prose">
+  <article class="container prose page-shell">
     <h1>关于</h1>
     {site.bio.map((para) => <p>{para}</p>)}
   </article>
 </BaseLayout>
+<style>
+  .page-shell { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
+</style>

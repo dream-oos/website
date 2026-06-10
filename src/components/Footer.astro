@@ -4,12 +4,51 @@ import { site } from '../config/site';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
-  <div class="container container--wide">
-    <SocialLinks links={site.socials} />
-    <p class="muted">© {year} {site.name} · <a href={`mailto:${site.email}`}>{site.email}</a></p>
+  <div class="container container--wide site-footer__inner">
+    <div class="site-footer__brand">
+      <p>{site.name}</p>
+      <p class="muted">写代码、做项目，也记录一点生活。</p>
+    </div>
+    <div class="site-footer__meta">
+      <SocialLinks links={site.socials} />
+      <p class="muted">© {year} {site.name} / <a href={`mailto:${site.email}`}>{site.email}</a></p>
+    </div>
   </div>
 </footer>
 <style>
-  .site-footer { border-top: 1px solid var(--color-border); margin-top: 4rem; padding-block: 2rem; }
-  .site-footer p { font-size: .8rem; margin-top: .5rem; }
+  .site-footer {
+    flex-shrink: 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
+    margin-top: clamp(4rem, 9vw, 7rem);
+    padding-block: 1.65rem 1.9rem;
+    background: color-mix(in srgb, var(--color-bg) 94%, var(--color-surface));
+  }
+
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1.5rem;
+  }
+
+  .site-footer__brand p:first-child {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.25;
+    color: var(--color-text);
+  }
+
+  .site-footer__brand .muted,
+  .site-footer__meta p {
+    font-size: .82rem;
+    line-height: 1.6;
+  }
+
+  .site-footer__brand .muted { margin-top: .3rem; }
+  .site-footer__meta { display: grid; justify-items: end; gap: .35rem; }
+
+  @media (max-width: 640px) {
+    .site-footer__inner { grid-template-columns: 1fr; align-items: start; }
+    .site-footer__meta { justify-items: start; }
+  }
 </style>
