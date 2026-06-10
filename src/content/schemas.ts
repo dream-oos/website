@@ -5,6 +5,8 @@ export const blogSchema = z.object({
   date: z.coerce.date(),
   description: z.string(),
   tags: z.array(z.string()).optional(),
+  cover: z.string().url().or(z.string().startsWith('/')).optional(),
+  coverAlt: z.string().optional(),
   draft: z.boolean().default(false),
 });
 
