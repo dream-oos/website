@@ -17,6 +17,52 @@ const fmt = date.toISOString().slice(0, 10);
     <slot />
   </article>
 </BaseLayout>
+<script>
+  const copyText = async (text: string) => {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.inset = '-9999px auto auto -9999px';
+    document.body.append(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+  };
+
+  document.querySelectorAll<HTMLElement>('.prose pre').forEach((pre) => {
+    if (pre.parentElement?.classList.contains('code-block')) return;
+
+    const code = pre.querySelector('code');
+    const wrapper = document.createElement('div');
+    const button = document.createElement('button');
+
+    wrapper.className = 'code-block';
+    button.className = 'code-copy-button';
+    button.type = 'button';
+    button.textContent = '复制';
+    button.setAttribute('aria-label', '复制代码块内容');
+
+    pre.before(wrapper);
+    wrapper.append(pre, button);
+
+    button.addEventListener('click', async () => {
+      try {
+        await copyText(code?.textContent ?? pre.textContent ?? '');
+        button.textContent = '已复制';
+        window.setTimeout(() => { button.textContent = '复制'; }, 1600);
+      } catch {
+        button.textContent = '复制失败';
+        window.setTimeout(() => { button.textContent = '复制'; }, 1600);
+      }
+    });
+  });
+</script>
 <style>
   .post-meta { font-size: .85rem; margin-top: -.35rem; margin-bottom: 1.5rem; font-variant-numeric: tabular-nums; }
   article { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
