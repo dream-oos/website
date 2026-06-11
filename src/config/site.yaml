@@ -1,0 +1,28 @@
+# 站点基础信息。修改这里即可定制个人网站。
+name: Dream
+tagline: 程序员 · 聆听音乐 · 喜欢小狗
+
+bio:
+  - 你好,我是Dream。我喜欢把复杂的东西做简单。
+  - 这里记录我的作品、随手写的文字,还有最近在读的书。
+
+# 头像路径可填写 public 下的绝对路径,例如 /avatar.jpg。
+# 不需要头像时留空即可。
+avatar: /images/logo-256x256.png
+
+# Logo 文件放在 public/images/ 下。
+# 这些路径会用于浏览器标签页图标、移动端收藏图标和导航栏品牌标记。
+logo:
+  mark: /images/logo-64x64.png
+  favicon32: /images/logo-32x32.png
+  favicon64: /images/logo-64x64.png
+  appleTouchIcon: /images/logo-256x256.png
+
+email: 3448104699@qq.com
+url: https://dream.vercel.app
+
+socials:
+  - label: GitHub
+    href: https://github.com/dream-oos
+  - label: 邮箱
+    href: mailto:3448104699@qq.com

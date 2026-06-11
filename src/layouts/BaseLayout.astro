@@ -27,6 +27,9 @@ const imageUrl = image ? (Astro.site ? new URL(image, Astro.site).toString() : i
     {imageUrl && <meta name="twitter:card" content="summary_large_image" />}
     {imageUrl && <meta name="twitter:image" content={imageUrl} />}
     <meta name="theme-color" content="#f6f0e6" />
+    {site.logo?.favicon32 && <link rel="icon" type="image/png" sizes="32x32" href={site.logo.favicon32} />}
+    {site.logo?.favicon64 && <link rel="icon" type="image/png" sizes="64x64" href={site.logo.favicon64} />}
+    {site.logo?.appleTouchIcon && <link rel="apple-touch-icon" sizes="256x256" href={site.logo.appleTouchIcon} />}
     <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
   </head>
   <body>

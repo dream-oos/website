@@ -8,7 +8,8 @@ This is a static Astro personal website. Source code lives in `src/`.
 - `src/layouts/`: shared page shells such as `BaseLayout.astro` and `PostLayout.astro`.
 - `src/components/`: reusable Astro UI components.
 - `src/content/`: Markdown content collections for `blog/` and `projects/`, plus schemas in `schemas.ts`.
-- `src/config/site.ts`: site identity, bio, email, URL, and social links. Treat this as the main customization file.
+- `src/config/site.yaml`: site identity, bio, email, URL, and social links. Treat this as the main customization file.
+- `src/config/site.ts`: typed YAML loader/validator for site config; usually do not customize values here.
 - `src/lib/`: pure helper functions, especially content filtering and sorting.
 - `src/styles/global.css`: design tokens and global prose styles.
 - `test/`: Vitest unit and Astro Container component tests.
@@ -44,4 +45,4 @@ When changing behavior, add or update a focused test in `test/`. For content/sch
 
 Commit history uses concise Conventional Commit-style prefixes, often in Chinese, such as `feat:`, `fix:`, `docs:`, and `chore:`. Keep each commit scoped to one concern.
 
-Pull requests should include a short summary, verification commands run, and screenshots for visible UI changes. Mention content/schema changes and any deployment-impacting config updates, especially changes to `src/config/site.ts` or `astro.config.mjs`.
+Pull requests should include a short summary, verification commands run, and screenshots for visible UI changes. Mention content/schema changes and any deployment-impacting config updates, especially changes to `src/config/site.yaml`, `src/config/site.ts`, or `astro.config.mjs`.
