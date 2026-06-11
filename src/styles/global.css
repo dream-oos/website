@@ -139,6 +139,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .container--wide { max-width: var(--wide-width); }
+.container--reading { max-width: 980px; }
 
 .section {
   margin-block: clamp(6rem, 13vw, 10rem);

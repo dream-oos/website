@@ -5,7 +5,7 @@ const { title, date, description, tags = [], cover, coverAlt } = Astro.props;
 const fmt = date.toISOString().slice(0, 10);
 ---
 <BaseLayout title={title} description={description} image={cover}>
-  <article class="container post-page">
+  <article class="container container--reading post-page">
     <header class="post-hero" data-reveal>
       <p class="eyebrow">文章</p>
       <h1>{title}</h1>
@@ -19,7 +19,7 @@ const fmt = date.toISOString().slice(0, 10);
         <img class="post-cover surface-core" src={cover} alt={coverAlt ?? title} loading="eager" decoding="async" />
       </div>
     )}
-    <div class="post-body surface-shell" data-reveal>
+    <div class="post-body surface-shell">
       <div class="prose surface-core">
         <slot />
       </div>
