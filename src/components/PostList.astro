@@ -5,30 +5,105 @@ const { posts } = Astro.props;
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <ul class="post-list">
-  {posts.map((post) => (
-    <li>
-      <a href={`/blog/${post.id}`}>{post.data.title}</a>
-      <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+  {posts.map((post, index) => (
+    <li data-reveal style={`--reveal-delay: ${index * 60}ms`}>
+      <a class="post-list__item" href={`/blog/${post.id}`}>
+        <span class="post-list__index">{String(index + 1).padStart(2, '0')}</span>
+        <span class="post-list__title">{post.data.title}</span>
+        <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+        <span class="post-list__icon" aria-hidden="true">↗</span>
+      </a>
     </li>
   ))}
 </ul>
 <style>
-  .post-list { list-style: none; padding: 0; }
-  .post-list li {
+  .post-list {
+    list-style: none;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1.5rem;
-    padding-block: .78rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
+    gap: .55rem;
+    padding: 0;
   }
 
-  .post-list a { color: var(--color-text); text-wrap: pretty; }
-  .post-list a:hover { color: var(--color-accent); }
-  .post-list time { color: var(--color-text-secondary); font-size: .8rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .post-list__item {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) auto 2.45rem;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid rgba(67, 47, 31, .09);
+    border-radius: 1.55rem;
+    background: rgba(255, 253, 247, .56);
+    color: var(--color-ink);
+    min-height: 4.7rem;
+    padding: .72rem .72rem .72rem 1rem;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .84);
+    transition: transform .72s var(--motion), background-color .72s var(--motion), border-color .72s var(--motion), box-shadow .72s var(--motion);
+  }
 
-  @media (max-width: 520px) {
-    .post-list li { grid-template-columns: 1fr; gap: .15rem; }
+  .post-list__item:hover {
+    border-color: rgba(111, 63, 45, .18);
+    background: rgba(255, 253, 247, .88);
+    color: var(--color-ink);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .9), 0 1.25rem 3rem rgba(64, 45, 31, .08);
+    transform: translate3d(.28rem, -.12rem, 0);
+  }
+
+  .post-list__item:active { transform: scale(.99); }
+
+  .post-list__index,
+  .post-list time {
+    color: var(--color-text-secondary);
+    font-size: .68rem;
+    font-weight: 760;
+    letter-spacing: .14em;
+    line-height: 1;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .post-list__title {
+    overflow: hidden;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.08rem, 1.8vw, 1.45rem);
+    font-weight: 660;
+    letter-spacing: -.045em;
+    line-height: 1.05;
+    text-overflow: ellipsis;
+    text-wrap: pretty;
+  }
+
+  .post-list__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.45rem;
+    height: 2.45rem;
+    border-radius: 999px;
+    background: rgba(33, 25, 18, .055);
+    color: var(--color-ink);
+    font-size: .85rem;
+    transition: transform .72s var(--motion), background-color .72s var(--motion);
+  }
+
+  .post-list__item:hover .post-list__icon {
+    background: rgba(155, 95, 67, .12);
+    transform: translate(.18rem, -.06rem) scale(1.05);
+  }
+
+  @media (max-width: 620px) {
+    .post-list__item {
+      grid-template-columns: 2.4rem minmax(0, 1fr) 2.45rem;
+      gap: .75rem;
+    }
+
+    .post-list time {
+      grid-column: 2 / 3;
+      grid-row: 2;
+      justify-self: start;
+    }
+
+    .post-list__icon {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+    }
   }
 </style>

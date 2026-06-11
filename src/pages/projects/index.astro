@@ -9,14 +9,47 @@ const all = getFeaturedProjects(projects, projects.length);
 ---
 <BaseLayout title="作品" description="我做过的一些项目和作品">
   <div class="container container--wide page-shell">
-    <h1>作品</h1>
+    <header class="page-hero" data-reveal>
+      <p class="eyebrow">作品集</p>
+      <h1>作品</h1>
+      <p class="muted">一些练习、实验和真正解决问题的小工具。</p>
+    </header>
     <div class="grid">
-      {all.map((project) => <ProjectCard project={project} />)}
+      {all.map((project, index) => (
+        <div class={`grid__item grid__item--${(index % 4) + 1}`}>
+          <ProjectCard project={project} />
+        </div>
+      ))}
     </div>
   </div>
 </BaseLayout>
 <style>
-  .page-shell { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
-  .grid { display: grid; gap: 1.1rem; grid-template-columns: 1fr; margin-top: 1.6rem; }
-  @media (min-width: 720px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .page-shell { padding-block: clamp(3rem, 8vw, 6rem); }
+  .page-hero { max-width: 58rem; }
+  .page-hero .muted {
+    max-width: 34rem;
+    margin-top: 1rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(.9rem, 2vw, 1.15rem);
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+  .grid__item--1 { grid-column: span 7; }
+  .grid__item--2 { grid-column: span 5; transform: translateY(2rem); }
+  .grid__item--3 { grid-column: span 5; }
+  .grid__item--4 { grid-column: span 7; transform: translateY(-.65rem); }
+
+  @media (max-width: 767px) {
+    .grid { grid-template-columns: 1fr; }
+    .grid__item--1,
+    .grid__item--2,
+    .grid__item--3,
+    .grid__item--4 {
+      grid-column: 1;
+      transform: none;
+    }
+  }
 </style>

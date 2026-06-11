@@ -2,45 +2,206 @@
 import SocialLinks from './SocialLinks.astro';
 import { site } from '../config/site';
 ---
-<header class="hero">
-  <div class="hero__copy">
-    {site.avatar && <img class="hero__avatar" src={site.avatar} alt={site.name} width="72" height="72" />}
-    <h1>你好,我是{site.name}</h1>
-    <p class="muted hero__tagline">{site.tagline}</p>
-  </div>
-  <div class="hero__links" aria-label="社交链接">
-    <SocialLinks links={site.socials} />
-  </div>
+<header class="hero" data-reveal>
+  <section class="hero__copy" aria-labelledby="home-title">
+    <p class="eyebrow">个人站点</p>
+    <h1 id="home-title">把代码写成有呼吸的作品。</h1>
+    <p class="hero__tagline">{site.tagline}。我在这里收藏项目、文字、灵感和那些把复杂问题慢慢拆开的时刻。</p>
+    <div class="cta-row hero__actions">
+      <a class="cta-pill" href="/projects">
+        查看作品
+        <span class="cta-pill__icon" aria-hidden="true">↗</span>
+      </a>
+      <a class="cta-pill cta-pill--ghost" href="/blog">
+        阅读笔记
+        <span class="cta-pill__icon" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <aside class="hero__portrait surface-shell" aria-label={`${site.name} 概览卡片`}>
+    <div class="hero__portrait-core surface-core">
+      <div class="hero__orb" aria-hidden="true">
+        {site.avatar ? <img src={site.avatar} alt="" width="160" height="160" /> : <span>D</span>}
+      </div>
+      <div class="hero__identity">
+        <p class="hero__name">{site.name}</p>
+        <p class="muted">开发者 · 音乐听众 · 小狗爱好者</p>
+      </div>
+      <dl class="hero__signals">
+        <div>
+          <dt>专注</dt>
+          <dd>Astro · TypeScript</dd>
+        </div>
+        <div>
+          <dt>状态</dt>
+          <dd>安静地打磨作品</dd>
+        </div>
+        <div>
+          <dt>此刻</dt>
+          <dd>少写一点，多改几遍</dd>
+        </div>
+      </dl>
+      <div class="hero__socials">
+        <SocialLinks links={site.socials} />
+      </div>
+    </div>
+  </aside>
 </header>
+
 <style>
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1.08fr) minmax(20rem, .64fr);
     align-items: end;
-    gap: 1.5rem;
-    padding-block: clamp(3rem, 8vw, 5.5rem) clamp(1.75rem, 4vw, 2.5rem);
-    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+    gap: clamp(2rem, 6vw, 5rem);
+    min-height: min(72rem, calc(100dvh - 8rem));
+    padding-block: clamp(2.5rem, 7vw, 5rem) clamp(4rem, 8vw, 7rem);
   }
 
   .hero__copy {
     display: grid;
     justify-items: start;
-    gap: .65rem;
   }
 
-  .hero__avatar { border-radius: 50%; background: var(--color-border); }
-  .hero__tagline { max-width: 32rem; font-size: clamp(.98rem, 1.5vw, 1.1rem); }
-  .hero__links { padding-bottom: .18rem; }
-  .hero :global(.socials) { justify-content: flex-end; }
+  .hero h1 {
+    max-width: 11ch;
+  }
 
-  @media (max-width: 640px) {
+  .hero__tagline {
+    max-width: 38rem;
+    margin-top: 1.45rem;
+    color: color-mix(in srgb, var(--color-text) 78%, var(--color-text-secondary));
+    font-size: clamp(1.08rem, 1.8vw, 1.36rem);
+    line-height: 1.78;
+  }
+
+  .hero__actions { margin-top: 2rem; }
+
+  .hero__portrait {
+    transform: rotate(1.4deg) translateY(-.4rem);
+    transform-origin: center;
+  }
+
+  .hero__portrait-core {
+    position: relative;
+    display: grid;
+    gap: 1.2rem;
+    overflow: hidden;
+    min-height: 34rem;
+    padding: clamp(1.2rem, 3vw, 1.55rem);
+  }
+
+  .hero__portrait-core::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 28% 18%, rgba(217, 173, 141, .42), transparent 12rem),
+      radial-gradient(circle at 90% 84%, rgba(154, 170, 140, .28), transparent 14rem);
+    pointer-events: none;
+  }
+
+  .hero__portrait-core > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__orb {
+    display: grid;
+    place-items: center;
+    width: min(52vw, 12.5rem);
+    aspect-ratio: 1;
+    border: 1px solid rgba(67, 47, 31, .1);
+    border-radius: 38% 62% 54% 46% / 48% 42% 58% 52%;
+    background:
+      radial-gradient(circle at 35% 25%, rgba(255, 255, 255, .75), transparent 24%),
+      linear-gradient(135deg, #2b1b11, #7d4f38 48%, #cda081);
+    color: #fff8ec;
+    font-family: var(--font-serif);
+    font-size: clamp(3.4rem, 9vw, 5.4rem);
+    font-weight: 720;
+    letter-spacing: -.08em;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .22), 0 2.5rem 5rem rgba(64, 45, 31, .16);
+  }
+
+  .hero__orb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
+  .hero__identity {
+    align-self: end;
+    margin-top: auto;
+  }
+
+  .hero__name {
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.7rem, 3.2vw, 2.55rem);
+    font-weight: 700;
+    letter-spacing: -.065em;
+    line-height: 1;
+  }
+
+  .hero__signals {
+    display: grid;
+    gap: .55rem;
+  }
+
+  .hero__signals div {
+    display: grid;
+    grid-template-columns: 4.4rem minmax(0, 1fr);
+    gap: .85rem;
+    align-items: center;
+    border: 1px solid rgba(67, 47, 31, .08);
+    border-radius: 1.25rem;
+    background: rgba(255, 253, 247, .44);
+    padding: .72rem .85rem;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .72);
+  }
+
+  .hero__signals dt {
+    color: var(--color-text-secondary);
+    font-size: .62rem;
+    font-weight: 760;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .hero__signals dd {
+    color: var(--color-ink);
+    font-size: .88rem;
+    font-weight: 720;
+    line-height: 1.35;
+  }
+
+  .hero__socials {
+    padding-top: .15rem;
+  }
+
+  @media (max-width: 900px) {
     .hero {
       grid-template-columns: 1fr;
-      align-items: start;
-      padding-block: 2.4rem 1.5rem;
+      min-height: auto;
+      padding-block: 2.25rem 4.5rem;
     }
 
-    .hero__links { padding-bottom: 0; }
-    .hero :global(.socials) { justify-content: flex-start; }
+    .hero h1 { max-width: 12ch; }
+    .hero__portrait { transform: none; }
+    .hero__portrait-core { min-height: auto; }
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      gap: 2rem;
+      padding-inline: 0;
+    }
+
+    .hero__tagline { margin-top: 1.15rem; }
+    .hero__actions { margin-top: 1.5rem; }
+    .hero__signals div { grid-template-columns: 1fr; gap: .1rem; }
   }
 </style>

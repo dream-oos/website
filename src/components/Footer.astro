@@ -3,25 +3,27 @@ import SocialLinks from './SocialLinks.astro';
 import { site } from '../config/site';
 const year = new Date().getFullYear();
 ---
-<footer class="site-footer">
-  <div class="container container--wide site-footer__inner">
-    <div class="site-footer__brand">
-      <p>{site.name}</p>
-      <p class="muted">写代码、做项目，也记录一点生活。</p>
-    </div>
-    <div class="site-footer__meta">
-      <SocialLinks links={site.socials} />
-      <p class="muted">© {year} {site.name} / <a href={`mailto:${site.email}`}>{site.email}</a></p>
+<footer class="site-footer" data-reveal>
+  <div class="container container--wide">
+    <div class="site-footer__shell surface-shell">
+      <div class="site-footer__inner surface-core">
+        <div class="site-footer__brand">
+          <p>{site.name}</p>
+          <p class="muted">写代码、做项目，也记录一点生活。保持安静、清晰和有质感。</p>
+        </div>
+        <div class="site-footer__meta">
+          <SocialLinks links={site.socials} />
+          <p class="muted">© {year} {site.name} / <a href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+      </div>
     </div>
   </div>
 </footer>
 <style>
   .site-footer {
     flex-shrink: 0;
-    border-top: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
     margin-top: clamp(4rem, 9vw, 7rem);
-    padding-block: 1.65rem 1.9rem;
-    background: color-mix(in srgb, var(--color-bg) 94%, var(--color-surface));
+    padding-block: 0 clamp(1.25rem, 4vw, 2rem);
   }
 
   .site-footer__inner {
@@ -29,25 +31,29 @@ const year = new Date().getFullYear();
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
     gap: 1.5rem;
+    padding: clamp(1.2rem, 3vw, 1.55rem);
   }
 
   .site-footer__brand p:first-child {
+    color: var(--color-ink);
     font-family: var(--font-serif);
-    font-size: 1rem;
-    line-height: 1.25;
-    color: var(--color-text);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -.06em;
+    line-height: 1;
   }
 
   .site-footer__brand .muted,
   .site-footer__meta p {
+    max-width: 30rem;
     font-size: .82rem;
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
-  .site-footer__brand .muted { margin-top: .3rem; }
-  .site-footer__meta { display: grid; justify-items: end; gap: .35rem; }
+  .site-footer__brand .muted { margin-top: .55rem; }
+  .site-footer__meta { display: grid; justify-items: end; gap: .55rem; }
 
-  @media (max-width: 640px) {
+  @media (max-width: 700px) {
     .site-footer__inner { grid-template-columns: 1fr; align-items: start; }
     .site-footer__meta { justify-items: start; }
   }

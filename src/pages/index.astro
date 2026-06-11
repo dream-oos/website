@@ -16,62 +16,192 @@ const featured = getFeaturedProjects(projects, 4);
   <div class="container container--wide home-shell">
     <Hero />
 
-    <section class="section intro-section" id="about">
-      <div>
+    <section class="section intro-section" id="about" data-reveal>
+      <div class="intro-section__copy">
         <p class="eyebrow">关于</p>
+        <h2>少一点模板感，多一点人的痕迹。</h2>
       </div>
-      <div class="intro-section__body">
-        {site.bio.map((para) => <p>{para}</p>)}
-        <p class="more"><a href="/about">了解更多 →</a></p>
+      <div class="intro-section__card surface-shell">
+        <div class="intro-section__body surface-core">
+          {site.bio.map((para) => <p>{para}</p>)}
+          <div class="intro-section__details">
+            <span>关注体验的开发者</span>
+            <span>把音乐当工作台</span>
+            <span>小笔记，也认真写</span>
+          </div>
+          <p class="more">
+            <a class="cta-pill cta-pill--ghost" href="/about">
+              了解更多
+              <span class="cta-pill__icon" aria-hidden="true">↗</span>
+            </a>
+          </p>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="projects">
-      <p class="eyebrow">作品</p>
-      <div class="grid">
-        {featured.map((project) => <ProjectCard project={project} />)}
+    <section class="section projects-section" id="projects">
+      <div class="section-heading" data-reveal>
+        <p class="eyebrow">精选作品</p>
+        <h2>最近完成与正在打磨的作品。</h2>
       </div>
-      <p class="more"><a href="/projects">全部作品 →</a></p>
+      <div class="project-grid">
+        {featured.map((project, index) => (
+          <div class={`project-grid__item project-grid__item--${index + 1}`}>
+            <ProjectCard project={project} />
+          </div>
+        ))}
+      </div>
+      <p class="more more--center" data-reveal>
+        <a class="cta-pill" href="/projects">
+          全部作品
+          <span class="cta-pill__icon" aria-hidden="true">↗</span>
+        </a>
+      </p>
     </section>
 
     <section class="section writing-section" id="writing">
-      <p class="eyebrow">最近写的</p>
-      <PostList posts={recent} />
-      <p class="more"><a href="/blog">全部文章 →</a></p>
+      <div class="writing-section__head" data-reveal>
+        <p class="eyebrow">最近笔记</p>
+        <h2>最近写的。</h2>
+      </div>
+      <div class="writing-section__list surface-shell" data-reveal>
+        <div class="surface-core writing-section__core">
+          <PostList posts={recent} />
+        </div>
+      </div>
+      <p class="more" data-reveal>
+        <a class="cta-pill cta-pill--ghost" href="/blog">
+          全部文章
+          <span class="cta-pill__icon" aria-hidden="true">→</span>
+        </a>
+      </p>
     </section>
   </div>
 </BaseLayout>
 <style>
-  .home-shell { padding-top: .5rem; }
+  .home-shell { padding-top: .2rem; }
+
   .intro-section {
     display: grid;
-    grid-template-columns: minmax(7rem, .34fr) minmax(0, .66fr);
-    gap: clamp(1.5rem, 5vw, 3rem);
+    grid-template-columns: minmax(0, .9fr) minmax(21rem, 1fr);
     align-items: start;
-    max-width: 920px;
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .intro-section h2,
+  .section-heading h2,
+  .writing-section h2 {
+    max-width: 10.5ch;
+  }
+
+  .intro-section__card {
+    transform: rotate(-1.2deg);
   }
 
   .intro-section__body {
-    max-width: 620px;
-    font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+    padding: clamp(1.25rem, 3vw, 1.8rem);
+    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    line-height: 1.82;
   }
 
-  .intro-section__body p + p { margin-top: .55rem; }
+  .intro-section__body p + p { margin-top: .75rem; }
 
-  .grid {
+  .intro-section__details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-top: 1.35rem;
+  }
+
+  .intro-section__details span {
+    border: 1px solid rgba(67, 47, 31, .09);
+    border-radius: 999px;
+    background: rgba(255, 253, 247, .55);
+    color: var(--color-text-secondary);
+    font-size: .7rem;
+    font-weight: 720;
+    line-height: 1;
+    padding: .52rem .72rem;
+  }
+
+  .section-heading {
     display: grid;
-    gap: 1.1rem;
-    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    margin-bottom: clamp(2rem, 5vw, 3.2rem);
   }
 
-  .writing-section { max-width: 760px; }
-  .more { margin-top: 1rem; font-size: .9rem; }
-
-  @media (min-width: 720px) {
-    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: minmax(8rem, auto);
+    gap: clamp(.9rem, 2vw, 1.15rem);
   }
 
-  @media (max-width: 700px) {
-    .intro-section { grid-template-columns: 1fr; gap: .75rem; }
+  .project-grid__item--1 { grid-column: span 7; }
+  .project-grid__item--2 { grid-column: span 5; transform: translateY(2.4rem); }
+  .project-grid__item--3 { grid-column: span 5; }
+  .project-grid__item--4 { grid-column: span 7; transform: translateY(-.8rem); }
+
+  .writing-section {
+    display: grid;
+    grid-template-columns: minmax(16rem, .44fr) minmax(0, .72fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .writing-section__head {
+    position: sticky;
+    top: 8rem;
+  }
+
+  .writing-section__list,
+  .writing-section .more {
+    grid-column: 2;
+  }
+
+  .writing-section__core {
+    padding: .55rem;
+  }
+
+  .more {
+    margin-top: 1.25rem;
+  }
+
+  .more--center {
+    display: flex;
+    justify-content: center;
+    margin-top: 3.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .intro-section,
+    .writing-section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .intro-section__card { transform: none; }
+    .writing-section__head { position: static; }
+    .writing-section__list,
+    .writing-section .more { grid-column: auto; }
+  }
+
+  @media (max-width: 767px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .project-grid__item--1,
+    .project-grid__item--2,
+    .project-grid__item--3,
+    .project-grid__item--4 {
+      grid-column: 1;
+      transform: none;
+    }
+
+    .section-heading { justify-items: start; text-align: left; }
+    .more--center { justify-content: flex-start; margin-top: 1.6rem; }
   }
 </style>

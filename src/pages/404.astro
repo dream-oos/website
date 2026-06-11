@@ -2,12 +2,34 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="走失了" description="页面没找到">
-  <div class="container not-found">
-    <h1>404</h1>
-    <p class="muted">这里什么都没有,可能走错路了。</p>
-    <p><a href="/">← 回首页</a></p>
+  <div class="container not-found" data-reveal>
+    <div class="not-found__shell surface-shell">
+      <div class="not-found__core surface-core">
+        <p class="eyebrow">页面走失</p>
+        <h1>404</h1>
+        <p class="muted">这里什么都没有，可能走错路了。</p>
+        <a class="cta-pill cta-pill--ghost" href="/">
+          回首页
+          <span class="cta-pill__icon" aria-hidden="true">←</span>
+        </a>
+      </div>
+    </div>
   </div>
 </BaseLayout>
 <style>
-  .not-found { text-align: center; padding-block: 4rem; }
+  .not-found {
+    display: grid;
+    place-items: center;
+    min-height: 62dvh;
+    padding-block: clamp(3rem, 8vw, 6rem);
+    text-align: center;
+  }
+  .not-found__shell { width: min(100%, 36rem); }
+  .not-found__core {
+    display: grid;
+    justify-items: center;
+    padding: clamp(1.5rem, 5vw, 3rem);
+  }
+  .not-found h1 { font-size: clamp(4rem, 16vw, 8rem); }
+  .not-found .muted { margin-block: .8rem 1.35rem; }
 </style>

@@ -7,26 +7,271 @@ const links = [
 ];
 const path = Astro.url?.pathname ?? '';
 ---
-<nav class="site-nav container container--wide">
-  <a class="brand" href="/">{site.name}</a>
-  <ul>
-    {links.map((l) => (
-      <li><a href={l.href} aria-current={path.startsWith(l.href) ? 'page' : undefined}>{l.label}</a></li>
-    ))}
-  </ul>
-</nav>
+<header class="nav-layer" data-nav-root>
+  <nav class="site-nav" aria-label="主导航">
+    <a class="brand" href="/" aria-label={`${site.name} 首页`}>
+      <span class="brand__mark">D</span>
+      <span class="brand__text">{site.name}</span>
+    </a>
+
+    <ul class="nav-links" aria-label="桌面导航">
+      {links.map((l) => (
+        <li><a href={l.href} aria-current={path.startsWith(l.href) ? 'page' : undefined}>{l.label}</a></li>
+      ))}
+    </ul>
+
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav-overlay" aria-label="打开导航菜单" data-menu-button>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true" data-nav-overlay>
+    <div class="nav-overlay__panel">
+      <p class="eyebrow">导航</p>
+      <ul>
+        {links.map((l, index) => (
+          <li style={`--item-delay: ${90 + index * 70}ms`}>
+            <a href={l.href} aria-current={path.startsWith(l.href) ? 'page' : undefined}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+      <a class="nav-overlay__mail cta-pill cta-pill--ghost" href={`mailto:${site.email}`}>
+        写信给我
+        <span class="cta-pill__icon" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-nav-root]');
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const overlay = document.querySelector<HTMLElement>('[data-nav-overlay]');
+
+  const setOpen = (open: boolean) => {
+    root?.toggleAttribute('data-open', open);
+    document.body.classList.toggle('nav-open', open);
+    button?.setAttribute('aria-expanded', String(open));
+    button?.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+    overlay?.setAttribute('aria-hidden', String(!open));
+  };
+
+  button?.addEventListener('click', () => setOpen(!root?.hasAttribute('data-open')));
+  overlay?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+</script>
+
 <style>
+  .nav-layer {
+    position: fixed;
+    inset: 1.25rem 0 auto;
+    z-index: 10;
+    pointer-events: none;
+    display: grid;
+    justify-items: center;
+    padding-inline: 1rem;
+  }
+
   .site-nav {
-    min-height: 4.5rem;
+    pointer-events: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-block: .85rem;
+    gap: .75rem;
+    width: min(100%, 47rem);
+    min-height: 3.72rem;
+    border: 1px solid rgba(67, 47, 31, .12);
+    border-radius: 999px;
+    background: rgba(255, 253, 247, .72);
+    padding: .38rem .42rem .38rem .48rem;
+    box-shadow: 0 1.2rem 3rem rgba(64, 45, 31, .11), inset 0 1px 1px rgba(255, 255, 255, .9);
+    backdrop-filter: blur(28px) saturate(135%);
   }
 
-  .brand { font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-text); letter-spacing: -0.015em; }
-  .site-nav ul { list-style: none; display: flex; gap: .45rem; padding: 0; }
-  .site-nav ul a { display: inline-flex; align-items: center; min-height: 2rem; border-radius: 999px; padding-inline: .55rem; color: var(--color-text-secondary); font-size: .9rem; line-height: 1; transition: background-color .15s ease, color .15s ease; }
-  .site-nav ul a:hover { background: color-mix(in srgb, var(--color-surface) 72%, transparent); color: var(--color-text); }
-  .site-nav ul a[aria-current='page'] { color: var(--color-accent); }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .58rem;
+    border-radius: 999px;
+    color: var(--color-ink);
+    padding-right: .6rem;
+  }
+
+  .brand:hover { color: var(--color-ink); transform: translateY(-1px); }
+
+  .brand__mark {
+    display: inline-grid;
+    place-items: center;
+    width: 2.7rem;
+    height: 2.7rem;
+    border-radius: 999px;
+    background: var(--color-espresso);
+    color: #fff8ec;
+    font-family: var(--font-serif);
+    font-size: 1.14rem;
+    font-weight: 720;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .18);
+  }
+
+  .brand__text {
+    font-size: .9rem;
+    font-weight: 760;
+    letter-spacing: -.025em;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: .18rem;
+    padding: .22rem;
+    border-radius: 999px;
+    background: rgba(33, 25, 18, .035);
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.4rem;
+    border-radius: 999px;
+    color: var(--color-text-secondary);
+    font-size: .82rem;
+    font-weight: 720;
+    line-height: 1;
+    padding-inline: .95rem;
+    transition: color .55s var(--motion), background-color .55s var(--motion), transform .55s var(--motion);
+  }
+
+  .nav-links a:hover {
+    background: rgba(255, 253, 247, .76);
+    color: var(--color-ink);
+    transform: translateY(-1px);
+  }
+
+  .nav-links a[aria-current='page'] {
+    background: #fffaf0;
+    color: var(--color-accent-hover);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .9);
+  }
+
+  .menu-button {
+    position: relative;
+    display: none;
+    place-items: center;
+    width: 2.7rem;
+    height: 2.7rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(33, 25, 18, .07);
+    cursor: pointer;
+    transition: transform .7s var(--motion), background-color .7s var(--motion);
+  }
+
+  .menu-button:active { transform: scale(.96); }
+
+  .menu-button span {
+    position: absolute;
+    width: 1.05rem;
+    height: 1px;
+    border-radius: 99px;
+    background: var(--color-ink);
+    transition: transform .72s var(--motion), opacity .72s var(--motion);
+  }
+
+  .menu-button span:first-child { transform: translateY(-.23rem); }
+  .menu-button span:last-child { transform: translateY(.23rem); }
+
+  [data-open] .menu-button span:first-child { transform: rotate(45deg); }
+  [data-open] .menu-button span:last-child { transform: rotate(-45deg); }
+
+  .nav-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    display: grid;
+    place-items: center;
+    padding: 6rem 1rem 1rem;
+    background: rgba(246, 240, 230, .74);
+    opacity: 0;
+    transform: translate3d(0, -1.5rem, 0) scale(.985);
+    backdrop-filter: blur(34px) saturate(130%);
+    transition: opacity .72s var(--motion), transform .72s var(--motion);
+  }
+
+  [data-open] .nav-overlay {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  .nav-overlay__panel {
+    width: min(100%, 36rem);
+    border: 1px solid rgba(67, 47, 31, .1);
+    border-radius: 2.5rem;
+    background: rgba(255, 253, 247, .64);
+    padding: clamp(1.2rem, 5vw, 2rem);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .9), 0 2rem 5rem rgba(64, 45, 31, .13);
+  }
+
+  .nav-overlay ul {
+    list-style: none;
+    display: grid;
+    gap: .35rem;
+    padding: 0;
+    margin: .7rem 0 1.4rem;
+  }
+
+  .nav-overlay li {
+    opacity: 0;
+    transform: translate3d(0, 2.25rem, 0);
+    transition: opacity .8s var(--motion) var(--item-delay), transform .8s var(--motion) var(--item-delay);
+  }
+
+  [data-open] .nav-overlay li {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nav-overlay li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1.55rem;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(2.15rem, 8.5vw, 3.8rem);
+    letter-spacing: -.07em;
+    line-height: 1;
+    padding: .35rem .2rem .55rem;
+  }
+
+  .nav-overlay li a::after {
+    content: '↗';
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    background: rgba(33, 25, 18, .06);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    letter-spacing: 0;
+    transition: transform .72s var(--motion), background-color .72s var(--motion);
+  }
+
+  .nav-overlay li a:hover::after { transform: translate(.25rem, -.08rem) scale(1.06); }
+  .nav-overlay__mail { width: fit-content; }
+
+  @media (max-width: 767px) {
+    .nav-layer { inset-block-start: .8rem; }
+    .site-nav { min-height: 3.45rem; }
+    .nav-links { display: none; }
+    .menu-button { display: grid; }
+  }
 </style>

@@ -6,38 +6,150 @@ const { title, year, description, tags = [], link } = project.data;
 const external = Boolean(link);
 const href = link ?? `/projects/${project.id}`;
 ---
-<a class="card" href={href} {...(external ? { target: '_blank', rel: 'noopener' } : {})}>
-  <div class="card__head">
-    <h3>{title}</h3>
-    <span class="muted year">{year}</span>
-  </div>
-  <p class="muted desc">{description}</p>
-  {tags.length > 0 && <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>}
+<a class="project-card surface-shell" href={href} {...(external ? { target: '_blank', rel: 'noopener' } : {})} data-reveal>
+  <article class="project-card__core surface-core">
+    <div class="project-card__head">
+      <span class="project-card__kicker">作品</span>
+      <span class="project-card__year">{year}</span>
+    </div>
+    <div class="project-card__body">
+      <h3>{title}</h3>
+      <p class="muted desc">{description}</p>
+    </div>
+    <div class="project-card__foot">
+      {tags.length > 0 && <ul class="tags">{tags.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
+      <span class="project-card__icon" aria-hidden="true">↗</span>
+    </div>
+  </article>
 </a>
 <style>
-  .card {
-    min-height: 11.25rem;
+  .project-card {
+    display: block;
+    min-height: 18rem;
+    color: var(--color-text);
+    transition: transform .8s var(--motion), box-shadow .8s var(--motion), border-color .8s var(--motion);
+  }
+
+  .project-card:hover {
+    color: var(--color-text);
+    border-color: rgba(111, 63, 45, .18);
+    box-shadow: 0 2.4rem 5.5rem rgba(64, 45, 31, .12);
+    transform: translate3d(0, -.35rem, 0) rotate(-.35deg);
+  }
+
+  .project-card:active { transform: scale(.985); }
+
+  .project-card__core {
+    position: relative;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    background: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.3rem;
-    color: var(--color-text);
-    transition: border-color .18s ease, background-color .18s ease, transform .18s ease;
+    overflow: hidden;
+    min-height: 17rem;
+    padding: clamp(1.05rem, 2vw, 1.35rem);
   }
 
-  .card:hover {
-    background: var(--color-surface);
-    border-color: color-mix(in srgb, var(--color-accent) 72%, var(--color-border));
-    transform: translateY(-2px);
+  .project-card__core::before {
+    content: '';
+    position: absolute;
+    inset: auto -18% -42% auto;
+    width: 14rem;
+    aspect-ratio: 1;
+    border-radius: 999px;
+    background: rgba(217, 173, 141, .32);
+    pointer-events: none;
+    transition: transform .9s var(--motion), opacity .9s var(--motion);
   }
 
-  .card:active { transform: translateY(0); }
-  .card__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
-  .card__head h3 { font-size: 1.12rem; line-height: 1.35; }
-  .year { font-size: .8rem; font-variant-numeric: tabular-nums; }
-  .desc { max-width: 32rem; font-size: .92rem; line-height: 1.65; margin-top: .55rem; }
-  .tags { list-style: none; display: flex; gap: .45rem; flex-wrap: wrap; padding: 0; margin-top: .85rem; }
-  .tags li { font-size: .72rem; color: var(--color-text-secondary); border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent); border-radius: 999px; padding: .12rem .58rem; }
+  .project-card:hover .project-card__core::before {
+    opacity: .9;
+    transform: translate3d(-1.5rem, -1.25rem, 0) scale(1.08);
+  }
+
+  .project-card__head,
+  .project-card__foot,
+  .project-card__body {
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-card__head,
+  .project-card__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .project-card__kicker,
+  .project-card__year {
+    color: var(--color-text-secondary);
+    font-size: .64rem;
+    font-weight: 760;
+    letter-spacing: .18em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .project-card__year { font-variant-numeric: tabular-nums; }
+
+  .project-card__body {
+    align-self: end;
+    padding-block: 2rem 1.3rem;
+  }
+
+  .project-card__body h3 {
+    max-width: 11ch;
+    font-size: clamp(1.45rem, 2.8vw, 2.45rem);
+    line-height: .95;
+  }
+
+  .desc {
+    max-width: 32rem;
+    margin-top: .9rem;
+    font-size: .92rem;
+    line-height: 1.68;
+  }
+
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .38rem;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .tags li {
+    border: 1px solid rgba(67, 47, 31, .09);
+    border-radius: 999px;
+    background: rgba(255, 253, 247, .48);
+    color: var(--color-text-secondary);
+    font-size: .65rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: .42rem .62rem;
+  }
+
+  .project-card__icon {
+    flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 999px;
+    background: rgba(33, 25, 18, .06);
+    color: var(--color-ink);
+    transition: transform .8s var(--motion), background-color .8s var(--motion);
+  }
+
+  .project-card:hover .project-card__icon {
+    background: rgba(155, 95, 67, .13);
+    transform: translate(.26rem, -.1rem) scale(1.07);
+  }
+
+  @media (max-width: 767px) {
+    .project-card,
+    .project-card__core { min-height: 15rem; }
+    .project-card:hover { transform: translate3d(0, -.25rem, 0); }
+  }
 </style>

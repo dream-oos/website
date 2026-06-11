@@ -8,12 +8,31 @@ const posts = await getCollection('blog');
 const all = getRecentPosts(posts, posts.length);
 ---
 <BaseLayout title="博客" description="我写的文章和随笔">
-  <div class="container page-shell">
-    <h1>博客</h1>
-    <PostList posts={all} />
+  <div class="container container--wide page-shell">
+    <header class="page-hero" data-reveal>
+      <p class="eyebrow">文章归档</p>
+      <h1>博客</h1>
+      <p class="muted">关于开发、生活和一些正在变清晰的念头。</p>
+    </header>
+    <div class="archive-shell surface-shell" data-reveal>
+      <div class="archive-core surface-core">
+        <PostList posts={all} />
+      </div>
+    </div>
   </div>
 </BaseLayout>
 <style>
-  .page-shell { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
-  .page-shell :global(.post-list) { margin-top: 1.25rem; }
+  .page-shell { padding-block: clamp(3rem, 8vw, 6rem); }
+  .page-hero {
+    display: grid;
+    justify-items: start;
+    max-width: 52rem;
+  }
+  .page-hero .muted {
+    max-width: 34rem;
+    margin-top: 1rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+  }
+  .archive-shell { margin-top: clamp(2rem, 5vw, 3rem); }
+  .archive-core { padding: .55rem; }
 </style>
