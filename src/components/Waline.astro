@@ -1,0 +1,75 @@
+---
+interface Props { serverURL: string; }
+const { serverURL } = Astro.props;
+---
+<div class="waline-shell surface-shell" data-reveal>
+  <div class="waline-core surface-core">
+    <div id="waline-container" data-server-url={serverURL}></div>
+  </div>
+</div>
+
+<script>
+  import { init } from '@waline/client';
+  import '@waline/client/style';
+
+  const el = document.getElementById('waline-container');
+  if (el) {
+    init({
+      el: '#waline-container',
+      serverURL: el.dataset.serverUrl ?? '',
+      lang: 'zh-CN',
+      dark: false,
+      pageSize: 10,
+      reaction: true,
+      requiredMeta: ['nick', 'mail'],
+    });
+  }
+</script>
+
+<style>
+  .waline-shell {
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  .waline-core {
+    padding: clamp(1.3rem, 4vw, 2.35rem);
+  }
+
+  #waline-container {
+    --waline-font-size: 0.95rem;
+    --waline-theme-color: var(--color-accent);
+    --waline-active-color: var(--color-accent-hover);
+    --waline-color: var(--color-text);
+    --waline-bg-color: transparent;
+    --waline-bg-color-light: rgba(255, 253, 247, 0.5);
+    --waline-bg-color-hover: rgba(255, 253, 247, 0.7);
+    --waline-border-color: rgba(67, 47, 31, 0.1);
+    --waline-border: 1px solid rgba(67, 47, 31, 0.1);
+    --waline-info-bg-color: rgba(67, 47, 31, 0.04);
+    --waline-info-color: var(--color-text-secondary);
+    --waline-code-bg-color: rgba(67, 47, 31, 0.06);
+    --waline-bq-color: var(--color-clay);
+    --waline-badge-color: var(--color-sage);
+    --waline-badge-font-size: 0.65rem;
+    --waline-avatar-radius: 999px;
+  }
+
+  #waline-container :global(.wl-card) {
+    border-bottom: 1px solid rgba(67, 47, 31, 0.08);
+  }
+
+  #waline-container :global(.wl-input),
+  #waline-container :global(.wl-editor) {
+    border-radius: 0.85rem !important;
+    background: rgba(255, 253, 247, 0.56) !important;
+  }
+
+  #waline-container :global(.wl-btn) {
+    border-radius: 999px !important;
+    font-weight: 720 !important;
+  }
+
+  #waline-container :global(.wl-meta-head) {
+    gap: 0.5rem;
+  }
+</style>

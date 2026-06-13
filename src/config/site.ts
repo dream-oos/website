@@ -23,6 +23,7 @@ const siteConfigSchema = z.object({
   email: z.string().email(),
   url: z.string().url(),
   socials: z.array(socialLinkSchema).min(1),
+  walineServerURL: z.string().url().optional(),
 }).strict();
 
 export type SocialLink = z.infer<typeof socialLinkSchema>;

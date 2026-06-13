@@ -19,10 +19,12 @@ logo:
   appleTouchIcon: /images/logo-256x256.png
 
 email: 3448104699@qq.com
-url: https://dream.vercel.app
+url: https://dmsoul.com
 
 socials:
   - label: GitHub
     href: https://github.com/dream-oos
   - label: 邮箱
     href: mailto:3448104699@qq.com
+
+walineServerURL: https://waline.7s.nz/

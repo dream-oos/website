@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Waline from '../components/Waline.astro';
+import { site } from '../config/site';
+---
+
+<BaseLayout title="留言板" description="给我留言，留下你的想法和建议">
+  <div class="container container--wide page-shell">
+    <header class="page-hero" data-reveal>
+      <p class="eyebrow">留言板</p>
+      <h1>留言板</h1>
+      <p class="muted">欢迎留下你的想法、建议或随便聊聊。每条留言我都会认真看。</p>
+    </header>
+
+    {site.walineServerURL && <Waline serverURL={site.walineServerURL} />}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-shell { padding-block: clamp(3rem, 8vw, 6rem); }
+  .page-hero { max-width: 58rem; }
+  .page-hero .muted {
+    max-width: 34rem;
+    margin-top: 1rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+  }
+</style>
