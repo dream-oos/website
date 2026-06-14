@@ -1,48 +1,35 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
+Static Astro personal website. Source in `src/`, tests in `test/`.
 
-This is a static Astro personal website. Source code lives in `src/`.
+## Commands
 
-- `src/pages/`: route files, including dynamic blog/project pages and `rss.xml.js`.
-- `src/layouts/`: shared page shells such as `BaseLayout.astro` and `PostLayout.astro`.
-- `src/components/`: reusable Astro UI components.
-- `src/content/`: Markdown content collections for `blog/` and `projects/`, plus schemas in `schemas.ts`.
-- `src/config/site.yaml`: site identity, bio, email, URL, and social links. Treat this as the main customization file.
-- `src/config/site.ts`: typed YAML loader/validator for site config; usually do not customize values here.
-- `src/lib/`: pure helper functions, especially content filtering and sorting.
-- `src/styles/global.css`: design tokens and global prose styles.
-- `test/`: Vitest unit and Astro Container component tests.
+Use `pnpm` for everything.
 
-Generated folders such as `.astro/`, `dist/`, and `node_modules/` must not be committed.
+| Command | Purpose |
+|---------|---------|
+| `pnpm dev` | Dev server at `http://localhost:4321` |
+| `pnpm check` | Astro type + content validation |
+| `pnpm build` | Static build to `dist/` |
+| `pnpm test` | Vitest (includes `--passWithNoTests`) |
+| `pnpm preview` | Preview built site |
 
-## Build, Test, and Development Commands
+Before handing off: `pnpm check && pnpm build && pnpm test`.
 
-Use `pnpm` for all package operations.
+## Architecture
 
-- `pnpm install`: install dependencies and run approved native build scripts.
-- `pnpm dev`: start the Astro dev server at `http://localhost:4321`.
-- `pnpm check`: run Astro type and content validation.
-- `pnpm build`: build the static site into `dist/`.
-- `pnpm preview`: preview the built site locally.
-- `pnpm test`: run all Vitest unit/component tests.
+- `src/config/site.yaml` — main customization file (name, bio, socials, avatar, logo, walineServerURL). Validated by `src/config/site.ts` via Zod + YAML `?raw` import.
+- `src/content/config.ts` — Astro content collections (`blog`, `projects`) using glob loader. Schemas in `src/content/schemas.ts`.
+- `src/lib/content.ts` — pure helpers: `excludeDrafts`, `sortByDateDesc`, `getRecentPosts`, `getFeaturedProjects`.
+- `src/pages/` — routes including `rss.xml.js`, `index.astro`, `about.astro`, `guestbook.astro`, dynamic `blog/` and `projects/` pages.
+- `astro.config.mjs` — imports `site.url` from config, Shiki theme `rose-pine-dawn`, sitemap integration.
 
-Before handing off substantial changes, run `pnpm check && pnpm build && pnpm test`.
+## Testing
 
-## Coding Style & Naming Conventions
+Vitest with `getViteConfig` from `astro/config`. Astro components tested via `experimental_AstroContainer`. Test files: `test/**/*.test.ts`.
 
-Use TypeScript and Astro with ESM imports. Match existing style: two-space indentation in markup, single quotes in TypeScript/JavaScript, semicolons in `.ts` files, and concise component props interfaces. Name components in PascalCase, for example `ProjectCard.astro`; name tests with `*.test.ts`.
+## Style
 
-Keep display components prop-driven. Keep data transformation logic in `src/lib/` as pure functions with focused tests.
-
-## Testing Guidelines
-
-Vitest is the test runner. Pure functions are tested directly, while Astro components use `experimental_AstroContainer` from `astro/container`.
-
-When changing behavior, add or update a focused test in `test/`. For content/schema changes, run `pnpm check` as well as `pnpm test`.
-
-## Commit & Pull Request Guidelines
-
-Commit history uses concise Conventional Commit-style prefixes, often in Chinese, such as `feat:`, `fix:`, `docs:`, and `chore:`. Keep each commit scoped to one concern.
-
-Pull requests should include a short summary, verification commands run, and screenshots for visible UI changes. Mention content/schema changes and any deployment-impacting config updates, especially changes to `src/config/site.yaml`, `src/config/site.ts`, or `astro.config.mjs`.
+- Two-space indentation, single quotes, semicolons in `.ts`.
+- Components PascalCase (`ProjectCard.astro`).
+- Conventional Commit prefixes, often in Chinese (`feat:`, `fix:`, `chore:`).
