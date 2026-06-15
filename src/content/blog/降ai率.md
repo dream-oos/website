@@ -1,5 +1,4 @@
 ---
-cover: https://raw.7s.nz/random?type=img&dir=images/carton&orientation=auto
 tags: [降AI,Prompt]
 title: 论文（或技术文档）修改助手
 date: 2026-05-22

@@ -20,24 +20,21 @@ describe('PostLayout', () => {
     expect(globalCss).toMatch(/\.container--reading\s*\{\s*max-width:\s*980px;\s*\}/);
   });
 
-  it('正文容器默认可见，同时保留页头与封面动效钩子', async () => {
+  it('正文容器默认可见，同时保留页头动效钩子', async () => {
     const c = await AstroContainer.create();
     const html = await c.renderToString(PostLayout, {
       props: {
         title: '长文',
         date: new Date('2026-06-12'),
         description: '用于回归测试',
-        cover: 'https://example.com/cover.jpg',
       },
     });
 
     const bodyShell = html.match(/<div[^>]*class="post-body surface-shell"[^>]*>/);
-    const coverShell = html.match(/<div[^>]*class="post-cover-shell surface-shell"[^>]*>/);
     const hero = html.match(/<header[^>]*class="post-hero"[^>]*>/);
 
     expect(bodyShell?.[0]).toBeDefined();
     expect(bodyShell?.[0]).not.toContain('data-reveal');
-    expect(coverShell?.[0]).toContain('data-reveal');
     expect(hero?.[0]).toContain('data-reveal');
   });
 });

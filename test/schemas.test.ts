@@ -7,15 +7,6 @@ describe('blogSchema', () => {
     expect(parsed.date instanceof Date).toBe(true);
     expect(parsed.draft).toBe(false);
   });
-  it('接受本地路径或外部 URL 作为封面', () => {
-    expect(blogSchema.parse({ title: 'A', date: '2026-06-01', description: 'd', cover: '/images/blog/a.jpg' }).cover)
-      .toBe('/images/blog/a.jpg');
-    expect(blogSchema.parse({ title: 'B', date: '2026-06-01', description: 'd', cover: 'https://example.com/b.jpg' }).cover)
-      .toBe('https://example.com/b.jpg');
-  });
-  it('cover 不是 URL 或绝对路径时报错', () => {
-    expect(() => blogSchema.parse({ title: 'A', date: '2026-06-01', description: 'd', cover: 'images/blog/a.jpg' })).toThrow();
-  });
   it('缺少 title 时报错', () => {
     expect(() => blogSchema.parse({ date: '2026-06-01', description: 'd' })).toThrow();
   });

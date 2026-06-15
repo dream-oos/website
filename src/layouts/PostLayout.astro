@@ -1,10 +1,13 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-interface Props { title: string; date: Date; description?: string; tags?: string[]; cover?: string; coverAlt?: string; }
-const { title, date, description, tags = [], cover, coverAlt } = Astro.props;
+import Waline from '../components/Waline.astro';
+import FloatingToolbar from '../components/FloatingToolbar.astro';
+import { site } from '../config/site';
+interface Props { title: string; date: Date; description?: string; tags?: string[]; }
+const { title, date, description, tags = [] } = Astro.props;
 const fmt = date.toISOString().slice(0, 10);
 ---
-<BaseLayout title={title} description={description} image={cover}>
+<BaseLayout title={title} description={description}>
   <article class="container container--reading post-page">
     <header class="post-hero" data-reveal>
       <p class="eyebrow">文章</p>
@@ -14,17 +17,14 @@ const fmt = date.toISOString().slice(0, 10);
         {tags.length > 0 && <span> / {tags.join(' / ')}</span>}
       </p>
     </header>
-    {cover && (
-      <div class="post-cover-shell surface-shell" data-reveal>
-        <img class="post-cover surface-core" src={cover} alt={coverAlt ?? title} loading="eager" decoding="async" />
-      </div>
-    )}
     <div class="post-body surface-shell">
       <div class="prose surface-core">
         <slot />
       </div>
     </div>
+    {site.walineServerURL && <Waline serverURL={site.walineServerURL} />}
   </article>
+  <FloatingToolbar />
 </BaseLayout>
 <script>
   const copyText = async (text: string) => {
@@ -44,32 +44,73 @@ const fmt = date.toISOString().slice(0, 10);
     textarea.remove();
   };
 
+  const MAX_HEIGHT = 400;
+
   document.querySelectorAll<HTMLElement>('.prose pre').forEach((pre) => {
     if (pre.parentElement?.classList.contains('code-block')) return;
 
     const code = pre.querySelector('code');
     const wrapper = document.createElement('div');
-    const button = document.createElement('button');
+    const copyBtn = document.createElement('button');
+    const toggleBtn = document.createElement('button');
 
     wrapper.className = 'code-block';
-    button.className = 'code-copy-button';
-    button.type = 'button';
-    button.textContent = '复制';
-    button.setAttribute('aria-label', '复制代码块内容');
+
+    copyBtn.className = 'code-copy-button';
+    copyBtn.type = 'button';
+    copyBtn.setAttribute('aria-label', '复制代码块内容');
+    copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+    copyBtn.dataset.label = '复制';
 
     pre.before(wrapper);
-    wrapper.append(pre, button);
+    wrapper.append(pre, copyBtn);
 
-    button.addEventListener('click', async () => {
+    copyBtn.addEventListener('click', async () => {
       try {
         await copyText(code?.textContent ?? pre.textContent ?? '');
-        button.textContent = '已复制';
-        window.setTimeout(() => { button.textContent = '复制'; }, 1600);
+        copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+        window.setTimeout(() => {
+          copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+        }, 1600);
       } catch {
-        button.textContent = '复制失败';
-        window.setTimeout(() => { button.textContent = '复制'; }, 1600);
+        copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        window.setTimeout(() => {
+          copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+        }, 1600);
       }
     });
+
+    if (pre.scrollHeight > MAX_HEIGHT) {
+      pre.style.maxHeight = `${MAX_HEIGHT}px`;
+      pre.style.overflow = 'hidden';
+
+      const fade = document.createElement('div');
+      fade.className = 'code-fade';
+
+      toggleBtn.className = 'code-toggle';
+      toggleBtn.type = 'button';
+      toggleBtn.setAttribute('aria-label', '展开代码');
+      toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+
+      wrapper.append(fade, toggleBtn);
+
+      toggleBtn.addEventListener('click', () => {
+        const expanded = pre.dataset.expanded === 'true';
+        if (expanded) {
+          pre.style.maxHeight = `${MAX_HEIGHT}px`;
+          pre.style.overflow = 'hidden';
+          toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+          toggleBtn.setAttribute('aria-label', '展开代码');
+          pre.dataset.expanded = 'false';
+        } else {
+          pre.style.maxHeight = `${pre.scrollHeight}px`;
+          pre.style.overflow = 'visible';
+          toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
+          toggleBtn.setAttribute('aria-label', '收起代码');
+          pre.dataset.expanded = 'true';
+        }
+      });
+    }
   });
 </script>
 <style>
@@ -83,13 +124,6 @@ const fmt = date.toISOString().slice(0, 10);
     letter-spacing: .08em;
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
-  }
-  .post-cover-shell { margin-top: clamp(2rem, 5vw, 3rem); }
-  .post-cover {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    background: var(--color-surface);
   }
   .post-body { margin-top: clamp(2rem, 5vw, 3rem); }
   .post-body .prose {
