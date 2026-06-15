@@ -2,6 +2,15 @@
 ---
 
 <div class="floating-toolbar" id="floating-toolbar">
+  <div class="toc-popup" id="toc-popup">
+    <div class="toc-popup__header">
+      <span class="toc-popup__title">目录</span>
+      <button class="toc-popup__close" id="toc-close" aria-label="关闭目录">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <nav class="toc-nav" id="toc-nav"></nav>
+  </div>
   <button class="ft-btn" id="ft-toc" title="目录" aria-label="目录">
     <i class="fa-solid fa-list-ul"></i>
   </button>
@@ -13,27 +22,15 @@
   </button>
 </div>
 
-<div class="toc-overlay" id="toc-overlay"></div>
-<aside class="toc-panel" id="toc-panel" aria-label="目录导航">
-  <div class="toc-header">
-    <span class="toc-header__title">目录</span>
-    <button class="toc-close" id="toc-close" aria-label="关闭目录">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-  <nav class="toc-nav" id="toc-nav"></nav>
-</aside>
-
 <script>
   const prose = document.querySelector('.prose');
   const headings = prose?.querySelectorAll<HTMLHeadingElement>('h2, h3');
   const tocNav = document.getElementById('toc-nav');
-  const tocPanel = document.getElementById('toc-panel');
-  const tocOverlay = document.getElementById('toc-overlay');
+  const tocPopup = document.getElementById('toc-popup');
   const tocBtn = document.getElementById('ft-toc');
+  const tocClose = document.getElementById('toc-close');
   const commentsBtn = document.getElementById('ft-comments');
   const topBtn = document.getElementById('ft-top');
-  const tocClose = document.getElementById('toc-close');
   const walineEl = document.getElementById('waline-container');
 
   if (!prose || !headings || headings.length === 0) {
@@ -69,7 +66,7 @@
 
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        closePanel();
+        closePopup();
         const target = document.getElementById(id);
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -107,25 +104,36 @@
     headings.forEach((h) => headingObserver.observe(h));
   }
 
-  function openPanel() {
-    tocPanel?.classList.add('toc-panel--open');
-    tocOverlay?.classList.add('toc-overlay--visible');
-    document.body.style.overflow = 'hidden';
+  function closePopup() {
+    tocPopup?.classList.remove('toc-popup--open');
   }
 
-  function closePanel() {
-    tocPanel?.classList.remove('toc-panel--open');
-    tocOverlay?.classList.remove('toc-overlay--visible');
-    document.body.style.overflow = '';
+  function togglePopup() {
+    tocPopup?.classList.toggle('toc-popup--open');
   }
 
-  tocBtn?.addEventListener('click', openPanel);
-  tocClose?.addEventListener('click', closePanel);
-  tocOverlay?.addEventListener('click', closePanel);
+  tocBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    togglePopup();
+  });
+
+  tocClose?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closePopup();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (tocPopup?.classList.contains('toc-popup--open')) {
+      const target = e.target as Node;
+      if (!tocPopup.contains(target) && target !== tocBtn && !tocBtn?.contains(target)) {
+        closePopup();
+      }
+    }
+  });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && tocPanel?.classList.contains('toc-panel--open')) {
-      closePanel();
+    if (e.key === 'Escape' && tocPopup?.classList.contains('toc-popup--open')) {
+      closePopup();
     }
   });
 

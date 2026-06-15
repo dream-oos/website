@@ -399,79 +399,69 @@ img { max-width: 100%; height: auto; display: block; }
   pointer-events: none;
 }
 
-.toc-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: rgba(33, 25, 18, .28);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .45s var(--motion), visibility .45s var(--motion);
-}
-
-.toc-overlay--visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.toc-panel {
-  position: fixed;
-  top: 0;
+.toc-popup {
+  position: absolute;
+  bottom: calc(100% + .6rem);
   right: 0;
-  bottom: 0;
-  z-index: 70;
-  width: min(320px, 88vw);
-  background: var(--color-surface);
-  border-left: 1px solid rgba(67, 47, 31, .1);
-  box-shadow: -1rem 0 3rem rgba(64, 45, 31, .12);
+  width: 280px;
+  max-height: 60vh;
   display: flex;
   flex-direction: column;
-  transform: translateX(100%);
-  transition: transform .55s var(--motion);
+  border: 1px solid rgba(67, 47, 31, .1);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: 0 1rem 3rem rgba(64, 45, 31, .14);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(.92);
+  transform-origin: bottom right;
+  transition: opacity .35s var(--motion), transform .35s var(--motion), visibility .35s var(--motion);
 }
 
-.toc-panel--open {
-  transform: translateX(0);
+.toc-popup--open {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
 }
 
-.toc-header {
+.toc-popup__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.15rem 1.35rem;
+  padding: .9rem 1.1rem;
   border-bottom: 1px solid rgba(67, 47, 31, .08);
+  flex-shrink: 0;
 }
 
-.toc-header__title {
+.toc-popup__title {
   font-family: var(--font-serif);
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 680;
   color: var(--color-ink);
 }
 
-.toc-close {
+.toc-popup__close {
   display: grid;
   place-items: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.75rem;
+  height: 1.75rem;
   border: 1px solid rgba(67, 47, 31, .1);
   border-radius: 999px;
   background: rgba(255, 253, 247, .7);
   color: var(--color-text-secondary);
-  font-size: .82rem;
+  font-size: .72rem;
   cursor: pointer;
   transition: color .55s var(--motion), background-color .55s var(--motion);
 }
 
-.toc-close:hover {
+.toc-popup__close:hover {
   background: var(--color-surface);
   color: var(--color-ink);
 }
 
 .toc-nav {
-  flex: 1;
   overflow-y: auto;
-  padding: 1rem 1.35rem;
+  padding: .65rem .85rem;
 }
 
 .toc-list {
