@@ -72,4 +72,8 @@ const { serverURL } = Astro.props;
   #waline-container :global(.wl-meta-head) {
     gap: 0.5rem;
   }
+
+  #waline-container :global(.wl-reaction-item.active .wl-reaction-votes) {
+    color: var(--color-surface);
+  }
 </style>
