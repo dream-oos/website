@@ -6,6 +6,6 @@ export default defineConfig({
   site: site.url,
   integrations: [sitemap()],
   markdown: {
-    shikiConfig: { theme: 'rose-pine-dawn', wrap: true },
+    shikiConfig: { theme: 'rose-pine', wrap: true },
   },
 });

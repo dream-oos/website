@@ -12,12 +12,12 @@ describe('PostLayout', () => {
         date: new Date('2026-06-12'),
       },
     });
-    const globalCss = await readFile(new URL('../src/styles/global.css', import.meta.url), 'utf8');
+    const baseCss = await readFile(new URL('../src/styles/base.css', import.meta.url), 'utf8');
 
     const article = html.match(/<article[^>]*class="container container--reading post-page"[^>]*>/);
 
     expect(article?.[0]).toBeDefined();
-    expect(globalCss).toMatch(/\.container--reading\s*\{\s*max-width:\s*980px;\s*\}/);
+    expect(baseCss).toMatch(/\.container--reading\s*\{\s*max-width:\s*980px;\s*\}/);
   });
 
   it('正文容器默认可见，同时保留页头动效钩子', async () => {
