@@ -5,13 +5,26 @@
   --color-ink: #211912;
   --color-text: #2d2118;
   --color-text-secondary: #7d6d5f;
-  --color-hairline: rgba(67, 47, 31, 0.12);
-  --color-hairline-strong: rgba(67, 47, 31, 0.2);
+  --color-hairline: rgb(var(--ink-rgb) / 0.12);
+  --color-hairline-strong: rgb(var(--ink-rgb) / 0.2);
   --color-accent: #9b5f43;
   --color-accent-hover: #6f3f2d;
   --color-sage: #9aaa8c;
   --color-clay: #d9ad8d;
   --color-espresso: #24170f;
+  --color-on-espresso: #fff8ec;
+
+  /* RGB triplets for alpha-blended layers. Override these in dark mode. */
+  --ink-rgb: 67 47 31;
+  --surface-rgb: 255 253 247;
+  --chip-rgb: 33 25 18;
+  --shadow-rgb: 64 45 31;
+  --highlight-rgb: 255 255 255;
+  --accent-rgb: 155 95 67;
+  --accent-hover-rgb: 111 63 45;
+  --clay-rgb: 217 173 141;
+  --sage-rgb: 154 170 140;
+  --bg-rgb: 246 240 230;
 
   --font-serif: 'Fraunces Variable', Georgia, 'Songti SC', serif;
   --font-sans: 'Geist', 'Plus Jakarta Sans', 'Aptos', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -24,4 +37,112 @@
   --wide-width: 1180px;
   --motion: cubic-bezier(0.32, 0.72, 0, 1);
   --motion-soft: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #1c1410;
+  --color-surface: #241a14;
+  --color-surface-strong: #2a1f17;
+  --color-ink: #f3e9da;
+  --color-text: #e6d9c6;
+  --color-text-secondary: #a89481;
+  --color-accent: #c98a68;
+  --color-accent-hover: #d9a384;
+  --color-sage: #a8b89a;
+  --color-clay: #c7997a;
+  --color-espresso: #f3e9da;
+  --color-on-espresso: #24170f;
+
+  --ink-rgb: 243 233 218;
+  --surface-rgb: 36 26 20;
+  --chip-rgb: 243 233 218;
+  --shadow-rgb: 0 0 0;
+  --highlight-rgb: 255 255 255;
+  --accent-rgb: 201 138 104;
+  --accent-hover-rgb: 217 163 132;
+  --clay-rgb: 199 153 122;
+  --sage-rgb: 168 184 154;
+  --bg-rgb: 28 20 16;
+}
+
+:root[data-theme='dark']::before {
+  background:
+    radial-gradient(circle at 15% 8%, rgba(201, 138, 104, .14), transparent 26rem),
+    radial-gradient(circle at 82% 18%, rgba(168, 184, 154, .1), transparent 30rem),
+    radial-gradient(circle at 52% 92%, rgba(124, 80, 58, .2), transparent 34rem);
+  opacity: .5;
+}
+
+:root[data-theme='dark']::after {
+  opacity: .06;
+  mix-blend-mode: screen;
+}
+
+/* 暗色模式:手动切换或无 JS 时跟随系统。data-theme 由首屏内联脚本同步设置。 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-bg: #1c1410;
+    --color-surface: #241a14;
+    --color-surface-strong: #2a1f17;
+    --color-ink: #f3e9da;
+    --color-text: #e6d9c6;
+    --color-text-secondary: #a89481;
+    --color-accent: #c98a68;
+    --color-accent-hover: #d9a384;
+    --color-sage: #a8b89a;
+    --color-clay: #c7997a;
+    --color-espresso: #f3e9da;
+    --color-on-espresso: #24170f;
+
+    --ink-rgb: 243 233 218;
+    --surface-rgb: 36 26 20;
+    --chip-rgb: 243 233 218;
+    --shadow-rgb: 0 0 0;
+    --highlight-rgb: 255 255 255;
+    --accent-rgb: 201 138 104;
+    --accent-hover-rgb: 217 163 132;
+    --clay-rgb: 199 153 122;
+    --sage-rgb: 168 184 154;
+    --bg-rgb: 28 20 16;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #1c1410;
+  --color-surface: #241a14;
+  --color-surface-strong: #2a1f17;
+  --color-ink: #f3e9da;
+  --color-text: #e6d9c6;
+  --color-text-secondary: #a89481;
+  --color-accent: #c98a68;
+  --color-accent-hover: #d9a384;
+  --color-sage: #a8b89a;
+  --color-clay: #c7997a;
+  --color-espresso: #f3e9da;
+  --color-on-espresso: #24170f;
+
+  --ink-rgb: 243 233 218;
+  --surface-rgb: 36 26 20;
+  --chip-rgb: 243 233 218;
+  --shadow-rgb: 0 0 0;
+  --highlight-rgb: 255 255 255;
+  --accent-rgb: 201 138 104;
+  --accent-hover-rgb: 217 163 132;
+  --clay-rgb: 199 153 122;
+  --sage-rgb: 168 184 154;
+  --bg-rgb: 28 20 16;
+}
+
+/* 暗色下的氛围背景与噪点 */
+:root[data-theme='dark']::before {
+  background:
+    radial-gradient(circle at 15% 8%, rgba(201, 138, 104, .14), transparent 26rem),
+    radial-gradient(circle at 82% 18%, rgba(168, 184, 154, .1), transparent 30rem),
+    radial-gradient(circle at 52% 92%, rgba(124, 80, 58, .2), transparent 34rem);
+  opacity: .5;
+}
+
+:root[data-theme='dark']::after {
+  opacity: .06;
+  mix-blend-mode: screen;
 }

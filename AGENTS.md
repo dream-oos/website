@@ -22,7 +22,7 @@ Before handing off: `pnpm check && pnpm build && pnpm test`.
 - `src/content/config.ts` — Astro content collections (`blog`, `projects`) using glob loader. Schemas in `src/content/schemas.ts`.
 - `src/lib/content.ts` — pure helpers: `excludeDrafts`, `sortByDateDesc`, `getRecentPosts`, `getFeaturedProjects`.
 - `src/pages/` — routes including `rss.xml.js`, `index.astro`, `about.astro`, `guestbook.astro`, dynamic `blog/` and `projects/` pages.
-- `astro.config.mjs` — imports `site.url` from config, Shiki theme `rose-pine-dawn`, sitemap integration.
+- `astro.config.mjs` — imports `site.url` from config, Shiki theme `rose-pine`, sitemap integration.
 
 ## Testing
 

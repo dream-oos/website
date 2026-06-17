@@ -32,8 +32,8 @@ const href = link ?? `/projects/${project.id}`;
 
   .project-card:hover {
     color: var(--color-text);
-    border-color: rgba(111, 63, 45, .18);
-    box-shadow: 0 2.4rem 5.5rem rgba(64, 45, 31, .12);
+    border-color: rgb(var(--accent-hover-rgb) / .18);
+    box-shadow: 0 2.4rem 5.5rem rgb(var(--shadow-rgb) / .12);
     transform: translate3d(0, -.35rem, 0) rotate(-.35deg);
   }
 
@@ -55,7 +55,7 @@ const href = link ?? `/projects/${project.id}`;
     width: 14rem;
     aspect-ratio: 1;
     border-radius: 999px;
-    background: rgba(217, 173, 141, .32);
+    background: rgb(var(--clay-rgb) / .32);
     pointer-events: none;
     transition: transform .9s var(--motion), opacity .9s var(--motion);
   }
@@ -120,9 +120,9 @@ const href = link ?? `/projects/${project.id}`;
   }
 
   .tags li {
-    border: 1px solid rgba(67, 47, 31, .09);
+    border: 1px solid rgb(var(--ink-rgb) / .09);
     border-radius: 999px;
-    background: rgba(255, 253, 247, .48);
+    background: rgb(var(--surface-rgb) / .48);
     color: var(--color-text-secondary);
     font-size: .65rem;
     font-weight: 700;
@@ -137,13 +137,13 @@ const href = link ?? `/projects/${project.id}`;
     width: 2.6rem;
     height: 2.6rem;
     border-radius: 999px;
-    background: rgba(33, 25, 18, .06);
+    background: rgb(var(--chip-rgb) / .06);
     color: var(--color-ink);
     transition: transform .8s var(--motion), background-color .8s var(--motion);
   }
 
   .project-card:hover .project-card__icon {
-    background: rgba(155, 95, 67, .13);
+    background: rgb(var(--accent-rgb) / .13);
     transform: translate(.26rem, -.1rem) scale(1.07);
   }
 

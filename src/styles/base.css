@@ -23,7 +23,7 @@ html::after {
   pointer-events: none;
   opacity: .045;
   background-image:
-    repeating-radial-gradient(circle at 0 0, rgba(33, 25, 18, .7) 0 1px, transparent 1px 4px);
+    repeating-radial-gradient(circle at 0 0, rgb(var(--chip-rgb) / .7) 0 1px, transparent 1px 4px);
   mix-blend-mode: multiply;
 }
 
@@ -32,7 +32,7 @@ body {
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(circle at 50% -10%, rgba(255, 253, 247, .92), transparent 34rem),
+    radial-gradient(circle at 50% -10%, rgb(var(--surface-rgb) / .92), transparent 34rem),
     var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
@@ -121,9 +121,9 @@ img { max-width: 100%; height: auto; display: block; }
   gap: .5rem;
   width: fit-content;
   margin-bottom: 1.25rem;
-  border: 1px solid rgba(67, 47, 31, .1);
+  border: 1px solid rgb(var(--ink-rgb) / .1);
   border-radius: 999px;
-  background: rgba(255, 253, 247, .62);
+  background: rgb(var(--surface-rgb) / .62);
   color: var(--color-text-secondary);
   font-size: .62rem;
   font-weight: 700;
@@ -131,7 +131,7 @@ img { max-width: 100%; height: auto; display: block; }
   line-height: 1;
   padding: .55rem .78rem;
   text-transform: uppercase;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .8);
+  box-shadow: inset 0 1px 1px rgb(var(--highlight-rgb) / .8);
 }
 
 .eyebrow::before {
@@ -140,23 +140,23 @@ img { max-width: 100%; height: auto; display: block; }
   height: .42rem;
   border-radius: 999px;
   background: var(--color-sage);
-  box-shadow: 0 0 0 .24rem rgba(154, 170, 140, .14);
+  box-shadow: 0 0 0 .24rem rgb(var(--sage-rgb) / .14);
 }
 
 .surface-shell {
-  border: 1px solid rgba(67, 47, 31, .1);
+  border: 1px solid rgb(var(--ink-rgb) / .1);
   border-radius: var(--radius-xl);
-  background: rgba(33, 25, 18, .035);
+  background: rgb(var(--chip-rgb) / .035);
   padding: .5rem;
-  box-shadow: 0 2rem 5rem rgba(64, 45, 31, .08);
+  box-shadow: 0 2rem 5rem rgb(var(--shadow-rgb) / .08);
 }
 
 .surface-core {
   border-radius: calc(var(--radius-xl) - .5rem);
   background: color-mix(in srgb, var(--color-surface) 92%, transparent);
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, .88),
-    inset 0 -1px 0 rgba(67, 47, 31, .06);
+    inset 0 1px 1px rgb(var(--highlight-rgb) / .88),
+    inset 0 -1px 0 rgb(var(--ink-rgb) / .06);
 }
 
 .cta-row {
@@ -167,12 +167,12 @@ img { max-width: 100%; height: auto; display: block; }
 
 .cta-pill {
   --pill-bg: var(--color-espresso);
-  --pill-fg: #fff8ec;
+  --pill-fg: var(--color-on-espresso);
   display: inline-flex;
   align-items: center;
   gap: .85rem;
   min-height: 3.25rem;
-  border: 1px solid rgba(33, 25, 18, .16);
+  border: 1px solid rgb(var(--chip-rgb) / .16);
   border-radius: 999px;
   background: var(--pill-bg);
   color: var(--pill-fg);
@@ -180,7 +180,7 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: .86rem;
   font-weight: 720;
   letter-spacing: -.01em;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .18), 0 1rem 2.4rem rgba(36, 23, 15, .14);
+  box-shadow: inset 0 1px 1px rgb(var(--highlight-rgb) / .18), 0 1rem 2.4rem rgb(var(--chip-rgb) / .14);
   transition: transform .7s var(--motion), background-color .7s var(--motion), color .7s var(--motion), border-color .7s var(--motion);
 }
 
@@ -192,9 +192,9 @@ img { max-width: 100%; height: auto; display: block; }
 .cta-pill:active { transform: scale(.98); }
 
 .cta-pill--ghost {
-  --pill-bg: rgba(255, 253, 247, .7);
+  --pill-bg: rgb(var(--surface-rgb) / .7);
   --pill-fg: var(--color-ink);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .85);
+  box-shadow: inset 0 1px 1px rgb(var(--highlight-rgb) / .85);
 }
 
 .cta-pill__icon {
@@ -203,11 +203,11 @@ img { max-width: 100%; height: auto; display: block; }
   width: 2.35rem;
   height: 2.35rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .12);
+  background: rgb(var(--highlight-rgb) / .12);
   transition: transform .7s var(--motion), background-color .7s var(--motion);
 }
 
-.cta-pill--ghost .cta-pill__icon { background: rgba(33, 25, 18, .07); }
+.cta-pill--ghost .cta-pill__icon { background: rgb(var(--chip-rgb) / .07); }
 .cta-pill:hover .cta-pill__icon { transform: translate(.22rem, -.08rem) scale(1.06); }
 
 [data-reveal] {

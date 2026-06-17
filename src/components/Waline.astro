@@ -18,7 +18,7 @@ const { serverURL } = Astro.props;
       el: '#waline-container',
       serverURL: el.dataset.serverUrl ?? '',
       lang: 'zh-CN',
-      dark: false,
+      dark: 'html[data-theme="dark"]',
       pageSize: 10,
       reaction: true,
       requiredMeta: ['nick', 'mail'],
@@ -41,13 +41,13 @@ const { serverURL } = Astro.props;
     --waline-active-color: var(--color-accent-hover);
     --waline-color: var(--color-text);
     --waline-bg-color: transparent;
-    --waline-bg-color-light: rgba(255, 253, 247, 0.5);
-    --waline-bg-color-hover: rgba(255, 253, 247, 0.7);
-    --waline-border-color: rgba(67, 47, 31, 0.1);
-    --waline-border: 1px solid rgba(67, 47, 31, 0.1);
-    --waline-info-bg-color: rgba(67, 47, 31, 0.04);
+    --waline-bg-color-light: rgb(var(--surface-rgb) / 0.5);
+    --waline-bg-color-hover: rgb(var(--surface-rgb) / 0.7);
+    --waline-border-color: rgb(var(--ink-rgb) / 0.1);
+    --waline-border: 1px solid rgb(var(--ink-rgb) / 0.1);
+    --waline-info-bg-color: rgb(var(--ink-rgb) / 0.04);
     --waline-info-color: var(--color-text-secondary);
-    --waline-code-bg-color: rgba(67, 47, 31, 0.06);
+    --waline-code-bg-color: rgb(var(--ink-rgb) / 0.06);
     --waline-bq-color: var(--color-clay);
     --waline-badge-color: var(--color-sage);
     --waline-badge-font-size: 0.65rem;
@@ -55,13 +55,13 @@ const { serverURL } = Astro.props;
   }
 
   #waline-container :global(.wl-card) {
-    border-bottom: 1px solid rgba(67, 47, 31, 0.08);
+    border-bottom: 1px solid rgb(var(--ink-rgb) / 0.08);
   }
 
   #waline-container :global(.wl-input),
   #waline-container :global(.wl-editor) {
     border-radius: 0.85rem !important;
-    background: rgba(255, 253, 247, 0.56) !important;
+    background: rgb(var(--surface-rgb) / 0.56) !important;
   }
 
   #waline-container :global(.wl-btn) {
