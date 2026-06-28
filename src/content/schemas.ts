@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'astro/zod';
 
 export const blogSchema = z.object({
   title: z.string(),
@@ -13,7 +13,7 @@ export const projectSchema = z.object({
   year: z.number().int(),
   description: z.string(),
   tags: z.array(z.string()).optional(),
-  link: z.string().url().optional(),
+  link: z.url().optional(),
   cover: z.string().optional(),
   order: z.number().optional(),
 });

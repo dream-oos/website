@@ -20,10 +20,10 @@ const siteConfigSchema = z.object({
   bio: z.array(z.string().min(1)).min(1),
   avatar: z.string().min(1).nullish().transform((value) => value ?? undefined),
   logo: logoSchema.optional(),
-  email: z.string().email(),
-  url: z.string().url(),
+  email: z.email(),
+  url: z.url(),
   socials: z.array(socialLinkSchema).min(1),
-  walineServerURL: z.string().url().optional(),
+  walineServerURL: z.url().optional(),
 }).strict();
 
 export type SocialLink = z.infer<typeof socialLinkSchema>;
